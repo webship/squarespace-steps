@@ -1,0 +1,139 @@
+/* Minimal demo styling approximating a Squarespace 7.1 template layout. */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Helvetica Neue", Arial, sans-serif;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+a { color: inherit; }
+
+.Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid #eee;
+}
+
+.Header-branding-logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.Header-nav {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.Header-nav-item a {
+  text-decoration: none;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.Header-nav-item a[aria-current="page"] {
+  border-bottom: 2px solid #1a1a1a;
+}
+
+.Header-toggle {
+  display: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .Header-nav { display: none; }
+  .Header-toggle { display: block; }
+}
+
+.hero {
+  padding: 4rem 2rem;
+  text-align: center;
+  background: #f7f5f2;
+}
+
+.hero-title { font-size: 2.5rem; margin: 0 0 1rem; }
+.hero-subtitle { font-size: 1.1rem; color: #555; margin: 0 0 2rem; }
+.sqs-block-button-element {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: #1a1a1a;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 2px;
+}
+
+.sqs-html-content { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+
+.ProductList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  list-style: none;
+  margin: 0;
+}
+
+.ProductList-item { text-align: center; }
+.ProductList-item img { width: 100%; height: 180px; object-fit: cover; background: #ddd; }
+.ProductItem-title { font-weight: 600; margin: 0.75rem 0 0.25rem; }
+.ProductItem-price { color: #555; margin: 0 0 0.75rem; }
+.sqs-add-to-cart-button {
+  padding: 0.5rem 1.25rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.BlogList { list-style: none; margin: 0; padding: 2rem; max-width: 800px; margin: 0 auto; }
+.BlogList-item { padding: 1.5rem 0; border-bottom: 1px solid #eee; }
+.BlogItem-title a { text-decoration: none; font-size: 1.4rem; }
+.BlogItem-meta { color: #888; font-size: 0.85rem; }
+
+.form-wrapper { max-width: 480px; margin: 0 auto; padding: 2rem; }
+.form-item { margin-bottom: 1rem; }
+.form-item label { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; }
+.form-item input, .form-item textarea {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+.form-submit-button {
+  padding: 0.65rem 1.75rem;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.form-submitted-message { display: none; color: #1a7a1a; margin-top: 1rem; }
+
+.Cart-inner { padding: 2rem; max-width: 600px; margin: 0 auto; }
+.Cart-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #eee; }
+.Cart-empty { color: #888; }
+
+.Footer {
+  padding: 3rem 2rem;
+  background: #1a1a1a;
+  color: #ccc;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.Footer-block-title { color: #fff; font-size: 0.85rem; text-transform: uppercase; margin: 0 0 0.75rem; }
+.Footer-nav { list-style: none; margin: 0; padding: 0; }
+.Footer-nav-item a { text-decoration: none; color: #ccc; font-size: 0.9rem; line-height: 2; }
+.Footer-copyright { width: 100%; margin-top: 2rem; font-size: 0.8rem; color: #888; }
