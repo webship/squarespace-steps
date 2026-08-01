@@ -1,0 +1,56 @@
+{
+  "name": "@webship/squarespace-steps",
+  "version": "2.0.0",
+  "description": "webship-js Cucumber/Playwright test project for Squarespace sites, using custom Squarespace step definitions and a self-contained demo site.",
+  "main": "tests/step-definitions/squarespace.steps.js",
+  "files": [
+    "tests/step-definitions/squarespace.steps.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "demo:serve": "http-server demo-site -p 8080 -s",
+    "test": "cucumber-js --config cucumber.js",
+    "test:headed": "HEADLESS=false cucumber-js --config cucumber.js",
+    "test:chromium": "BROWSER=chromium cucumber-js --config cucumber.js",
+    "test:firefox": "BROWSER=firefox cucumber-js --config cucumber.js",
+    "test:webkit": "BROWSER=webkit cucumber-js --config cucumber.js",
+    "generate-reports": "generate-reports"
+  },
+  "keywords": [
+    "webship-js",
+    "squarespace",
+    "cucumber",
+    "playwright",
+    "bdd",
+    "testing"
+  ],
+  "author": "Webship.co",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/webship/squarespace-steps.git"
+  },
+  "bugs": {
+    "url": "https://github.com/webship/squarespace-steps/issues"
+  },
+  "homepage": "https://github.com/webship/squarespace-steps#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 20.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "tsx": "^4.19.2",
+    "wait-on": "^9.0.10",
+    "webship-js": "^2.0.4"
+  },
+  "peerDependencies": {
+    "webship-js": "^2.0.4"
+  },
+  "overrides": {
+    "@cucumber/cucumber": "^12"
+  }
+}
