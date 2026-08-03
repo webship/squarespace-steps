@@ -7,7 +7,7 @@
 //
 //   require: [
 //     'node_modules/webship-js/tests/step-definitions/**/*.js',
-//     'node_modules/@webship/squarespace-steps/squarespace.steps.js',
+//     'node_modules/@webship-js/squarespace-steps/squarespace.steps.js',
 //     'tests/step-definitions/**/*.js',
 //   ],
 //

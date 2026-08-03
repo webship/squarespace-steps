@@ -1,5 +1,5 @@
 {
-  "name": "@webship/squarespace-steps",
+  "name": "@webship-js/squarespace-steps",
   "version": "2.0.0",
   "description": "webship-js Cucumber/Playwright test project for Squarespace sites, using custom Squarespace step definitions and a self-contained demo site.",
   "main": "tests/step-definitions/squarespace.steps.js",

@@ -4,7 +4,7 @@ This file is the durable contract for any AI coding assistant working in this re
 
 ## 1. Identity
 
-`@webship/squarespace-steps` is a [webship-js](https://github.com/webship/webship-js) Cucumber/Playwright test project for testing Squarespace sites, following webship-js's standard consumer-project layout (steps in `tests/step-definitions/`, features in `tests/features/`). It is published to npm as `@webship/squarespace-steps` — one of a family of similar per-site test projects (`@webship/wordpress-steps`, `@webship/odoo-steps`, ...) maintained under the `webship` GitHub organisation.
+`@webship-js/squarespace-steps` is a [webship-js](https://github.com/webship/webship-js) Cucumber/Playwright test project for testing Squarespace sites, following webship-js's standard consumer-project layout (steps in `tests/step-definitions/`, features in `tests/features/`). It is published to npm as `@webship-js/squarespace-steps` — one of a family of similar per-site test projects (`@webship-js/wordpress-steps`, `@webship-js/odoo-steps`, ...) maintained under the `webship` GitHub organisation.
 
 ## 2. Git & commit rules
 
