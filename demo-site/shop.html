@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Demo Studio &mdash; Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse the Demo Studio product catalog.">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script defer src="/assets/js/nav.js"></script>
+  <script defer src="/assets/js/cart.js"></script>
+</head>
+<body>
+  <header class="Header" data-nc-container="header">
+    <a class="Header-branding-logo" href="/">Demo Studio</a>
+    <nav aria-label="Main navigation">
+      <ul class="Header-nav">
+        <li class="Header-nav-item"><a href="/">Home</a></li>
+        <li class="Header-nav-item"><a href="/shop.html" aria-current="page">Shop</a></li>
+        <li class="Header-nav-item"><a href="/about.html">About</a></li>
+        <li class="Header-nav-item"><a href="/blog.html">Blog</a></li>
+        <li class="Header-nav-item"><a href="/contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <button class="Header-toggle" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 class="hero-title">Shop</h1>
+      <p class="hero-subtitle">Everything handmade, nothing mass-produced.</p>
+      <p class="Cart-summary" aria-live="polite"><span class="Cart-count">0</span> item(s) in cart</p>
+    </section>
+
+    <ul class="ProductList" data-total-products="3">
+      <li class="ProductList-item" data-product-id="ceramic-mug">
+        <a href="/shop.html#ceramic-mug">
+          <img src="/assets/img/product-placeholder.svg" alt="Ceramic Mug">
+          <p class="ProductItem-title">Ceramic Mug</p>
+          <p class="ProductItem-price">$24.00</p>
+        </a>
+        <button class="sqs-add-to-cart-button" data-product-id="ceramic-mug" data-product-title="Ceramic Mug" data-product-price="24.00">Add to Cart</button>
+      </li>
+      <li class="ProductList-item" data-product-id="linen-tote">
+        <a href="/shop.html#linen-tote">
+          <img src="/assets/img/product-placeholder.svg" alt="Linen Tote Bag">
+          <p class="ProductItem-title">Linen Tote Bag</p>
+          <p class="ProductItem-price">$38.00</p>
+        </a>
+        <button class="sqs-add-to-cart-button" data-product-id="linen-tote" data-product-title="Linen Tote Bag" data-product-price="38.00">Add to Cart</button>
+      </li>
+      <li class="ProductList-item" data-product-id="oak-cutting-board">
+        <a href="/shop.html#oak-cutting-board">
+          <img src="/assets/img/product-placeholder.svg" alt="Oak Cutting Board">
+          <p class="ProductItem-title">Oak Cutting Board</p>
+          <p class="ProductItem-price">$56.00</p>
+        </a>
+        <button class="sqs-add-to-cart-button" data-product-id="oak-cutting-board" data-product-title="Oak Cutting Board" data-product-price="56.00">Add to Cart</button>
+      </li>
+    </ul>
+
+    <aside class="Cart-inner" hidden>
+      <h2>Your cart</h2>
+      <ul class="Cart-items"></ul>
+      <p class="Cart-empty">Your cart is empty.</p>
+    </aside>
+  </main>
+
+  <footer class="Footer" data-nc-container="footer">
+    <div class="Footer-block">
+      <p class="Footer-block-title">Navigate</p>
+      <ul class="Footer-nav">
+        <li class="Footer-nav-item"><a href="/">Home</a></li>
+        <li class="Footer-nav-item"><a href="/shop.html">Shop</a></li>
+        <li class="Footer-nav-item"><a href="/about.html">About</a></li>
+        <li class="Footer-nav-item"><a href="/blog.html">Blog</a></li>
+        <li class="Footer-nav-item"><a href="/contact.html">Contact</a></li>
+      </ul>
+    </div>
+    <div class="Footer-block">
+      <p class="Footer-block-title">Follow</p>
+      <ul class="Footer-nav">
+        <li class="Footer-nav-item"><a href="https://instagram.com" rel="noopener">Instagram</a></li>
+        <li class="Footer-nav-item"><a href="https://facebook.com" rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+    <p class="Footer-copyright">&copy; 2026 Demo Studio. All rights reserved.</p>
+  </footer>
+</body>
+</html>
