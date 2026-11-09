@@ -1,3 +1,5 @@
+# The copy, counts and paths below are those of the demo site in demo-site/; swap
+# them for your own content when you copy this feature.
 Feature: Contact page
   As a visitor
   I want to send a message to the studio
