@@ -31,6 +31,9 @@ jobs:
       - name: Wait for demo site
         run: npx wait-on http://localhost:8080
 
+      - name: Check the JSDoc examples and feature steps against the step regexes
+        run: npm run test:examples
+
       - name: Run webship-js suite
         run: npm test
         env:

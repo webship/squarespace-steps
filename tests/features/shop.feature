@@ -1,3 +1,5 @@
+# The copy, counts and paths below are those of the demo site in demo-site/; swap
+# them for your own content when you copy this feature.
 Feature: Shop page
   As a shopper
   I want to browse products and add them to my cart
