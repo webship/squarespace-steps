@@ -25,20 +25,23 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 
 ## Checks on real sites
 
-`npm run test:real-sites` runs the `@real-site` features against four public template demos (Bailard, Loam and Soony on 7.1; Brine on 7.0). The steps they use only read the page: they do not submit forms, add to a cart or sign up. The sites are third-party demos and can change; a failure there means the template changed or a selector drifted, so check the page before changing a step. To run one site: `npm run test:real-sites -- @bailard`.
+`npm run test:real-sites` runs the `@real-site` features against five public template demos (Bailard, Loam, Soony and Hester on 7.1; Brine on 7.0). The steps they use only read the page: they do not submit forms, add to a cart or sign up. The sites are third-party demos and can change; a failure there means the template changed or a selector drifted, so check the page before changing a step. To run one site: `npm run test:real-sites -- @bailard`.
 
-| Check | Bailard 7.1 | Loam 7.1 | Soony 7.1 | Brine 7.0 |
-| --- | --- | --- | --- | --- |
-| Header navigation, current item | yes | yes | no page links in the header | yes |
-| Navigation folder | yes | | | |
-| Mobile menu open and close | yes | | | yes |
-| Hero title and button | yes | | | |
-| Form block: fill, choose (not sent) | | | yes | |
-| Newsletter block: browser-side validation | | | yes | |
-| Product list, product page, quantity | | | yes | yes |
-| Cart count and cart link | | | yes | yes |
-| Footer | yes | yes | yes | yes |
-| Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes |
+| Check | Bailard 7.1 | Loam 7.1 | Soony 7.1 | Brine 7.0 | Hester 7.1 |
+| --- | --- | --- | --- | --- | --- |
+| Header navigation, current item | yes | yes | no page links in the header | yes | |
+| Navigation folder | yes | | | | |
+| Mobile menu open and close | yes | | | yes | |
+| Hero title and button | yes | | | | |
+| Form block: fill, choose (not sent) | | | yes | | |
+| Newsletter block: browser-side validation | | | yes | | |
+| Product list, product page, quantity | | | yes | yes | |
+| Cart count and cart link | | | yes | yes | |
+| Blog list, post title, author, date | yes | yes | | yes | |
+| Search (a result, no match) | yes | | | yes | |
+| Gallery grid | | | | | yes |
+| Footer | yes | yes | yes | yes | |
+| Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes | yes |
 
 ## Setup
 
@@ -103,12 +106,23 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 | `the cart should contain <n> item(s)` | Then |
 | `the blog should list <n> post(s)` | Then |
 | `the blog post "<title>" should( not) be visible` | Then |
+| `I open the blog post "<title>"` | When |
+| `the blog post title should( not) be "<title>"` | Then |
+| `the blog post should( not) show the author "<name>"` | Then |
+| `the blog post should( not) show the date "<date>"` | Then |
+| `the gallery should show <n> image(s)` | Then |
+| `I search the site for "<words>"` | When |
+| `the search results should( not) contain "<title>"` | Then |
+| `the search should find <n> result(s)` | Then |
+| `the search should find no results` | Then |
 
 The product word is optional ("the Squarespace form" and "the form" both match). Every Then step takes `should` or `should not`, every action takes `I`, `we` or no pronoun, and every failure is a friendly message with a hint (no assertion or Playwright stack). Each assertion polls its condition for the `minWaitTime.page` budget (at least 10 s) instead of reading the page once, and every click this pack performs settles the page before the next step.
 
 Forms: a field is found by its label as a person reads it ("Email", not "Email (required)"); a "Name" field is two fields, "First Name" and "Last Name". The form block (`.form-wrapper`) validates on the server: "I submit the form" posts the form to Squarespace, which shows the errors or stores the submission, so use it only on a site you own. The newsletter block (`.newsletter-form`) stops an empty or wrong address in the browser and sends nothing. The confirmation of the form block (`.sqs-form-block-submission-html`) was not observed on a live site, because that needs a real submission; the newsletter confirmation (`.form-submission-text`) and the error markup were read from Squarespace's own scripts and pages.
 
 Shop: the product list shows titles and prices and links to the product page; the "Add to cart" button and the quantity field are on the product page, so "I add the product ... to the cart" opens the product first when it is called on the list. The cart count is the visible `.sqs-cart-quantity` of the header (a hidden or missing count is 0). The add steps create a cart on the site and were run only against `demo-site/`; the real-site features read the list, the product page, the quantity field and the cart link.
+
+Blog, gallery and search: a post is found by its exact title; the author and the date are compared as the page writes them (the date format is a site setting). The gallery count covers gallery grids and reels; the lightbox was not observed open on any public demo and is not covered. "I search the site for" opens `/search` when the page has no search field, types the words and presses Enter.
 
 Two things to know:
 

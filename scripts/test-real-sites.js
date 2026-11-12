@@ -10,6 +10,7 @@ const SITES = {
   '@bailard': 'https://bailard-demo.squarespace.com',
   '@loam': 'https://loam-demo.squarespace.com',
   '@soony': 'https://soony-demo.squarespace.com',
+  '@hester': 'https://hester-demo.squarespace.com',
   '@brine': 'https://brine-demo.squarespace.com',
 };
 

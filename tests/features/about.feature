@@ -15,6 +15,9 @@ Feature: About page
   Scenario: Navigation marks About as current
     Then "About" should be the current navigation item
 
+  Scenario: The workshop gallery shows its photos
+    Then the gallery should show 3 images
+
   Scenario: Footer is present
     Then the site footer should be visible
 

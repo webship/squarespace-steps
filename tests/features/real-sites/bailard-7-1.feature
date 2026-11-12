@@ -58,3 +58,22 @@ Feature: Squarespace 7.1 template demo (Bailard)
     Then the mobile menu should contain "Projects"
     When I close the mobile menu
     Then the mobile menu should not be open
+
+  Scenario: The blog lists its posts and a post shows its facts
+    Given I am on "/news"
+    Then the blog should list 3 posts
+    And the blog post "Get Out There!" should be visible
+    And the blog post "Our summer restock" should not be visible
+    When I open the blog post "Get Out There!"
+    Then the blog post title should be "Get Out There!"
+    And the hero title should be "Get Out There!"
+    And the blog post should show the author "Author Name"
+    And the blog post should show the date "May 28"
+    And "News" should be the current navigation item
+
+  Scenario: The site search finds a page and reports no match
+    Given I am on the homepage
+    When I search the site for "news"
+    Then the search results should contain "News"
+    When I search the site for "zzzqqq"
+    Then the search should find no results

@@ -12,9 +12,25 @@ Feature: Blog page
     Then the blog should list 2 posts
     And the blog post "Seasoning a cutting board the right way" should be visible
     And the blog post "Why we use linen instead of canvas" should be visible
+    But the blog post "Our summer restock" should not be visible
+
+  Scenario: The list shows the author and date of its posts
+    Then the blog post should show the author "Studio Team"
+    And the blog post should show the date "6/2/26"
+
+  Scenario: The hero title is not the title of the first post
+    Then the hero title should not be "Seasoning a cutting board the right way"
 
   Scenario: Navigation marks Blog as current
     Then "Blog" should be the current navigation item
+
+  Scenario: A post opens on its own page
+    When I open the blog post "Why we use linen instead of canvas"
+    Then the blog post title should be "Why we use linen instead of canvas"
+    And the hero title should be "Why we use linen instead of canvas"
+    And the blog post should show the author "Studio Team"
+    And the blog post should show the date "May 14"
+    And "Blog" should be the current navigation item
 
   @mobile
   Scenario: Blog listing remains usable on mobile

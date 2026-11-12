@@ -48,3 +48,17 @@ Feature: Squarespace 7.0 template demo (Brine)
     Given I am on "/shop-brine"
     When I open the cart
     Then I should be on "/cart"
+
+  Scenario: The blog lists its posts and a post shows its title
+    Given I am on "/blog-brine"
+    Then the blog should list 8 posts
+    And the blog post "Preserved Lemons" should be visible
+    And the blog post should show the author "Michelle Liv"
+    And the blog post should show the date "November 1, 2015"
+    When I open the blog post "Preserved Lemons"
+    Then the blog post title should be "Preserved Lemons"
+
+  Scenario: The site search finds a product
+    Given I am on "/shop-brine"
+    When I search the site for "kimchi"
+    Then the search results should contain "Kimchi"
