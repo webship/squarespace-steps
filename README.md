@@ -2,7 +2,7 @@
 
 [![Test](https://github.com/webship/squarespace-steps/actions/workflows/test.yml/badge.svg)](https://github.com/webship/squarespace-steps/actions/workflows/test.yml)
 
-A [webship-js](https://github.com/webship/webship-js) Cucumber/Playwright test project for [Squarespace](https://www.squarespace.com/) sites: navigation and the mobile menu, hero, footer, forms, shop and cart, blog, and the facts a page reports about itself.
+A [webship-js](https://github.com/webship/webship-js) Cucumber/Playwright test project for [Squarespace](https://www.squarespace.com/) sites: navigation and the mobile menu, hero, footer, forms and the newsletter block, shop and cart, blog, gallery, site search, the announcement bar, the cookie banner, and the facts a page reports about itself.
 
 This repository contains:
 
@@ -12,7 +12,7 @@ This repository contains:
 
 ## What the steps match
 
-The selectors were read from the markup of public Squarespace template demos, not written from memory. Squarespace 7.1 is the first target. The 7.0 steps cover the Brine family (class names that start with `Header-`, `Footer-`, `Mobile-`); other 7.0 template families use different class names and are not covered. Each step's JSDoc names the classes it uses.
+The selectors were read from the markup of public Squarespace template demos, not written from memory. Squarespace 7.1 is the first target. The 7.0 steps cover the Brine family (class names that start with `Header-`, `Footer-`, `Mobile-`); other 7.0 template families use different class names and are not covered. Each step's JSDoc names the classes it uses, and [docs/selector-evidence.md](docs/selector-evidence.md) lists the pages they were read from, what could not be observed on a live site, and the raw counts. `npm run probe -- <url>` counts the pack's selectors on any page.
 
 Two facts about the real markup shape the steps:
 
@@ -25,7 +25,7 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 
 ## Checks on real sites
 
-`npm run test:real-sites` runs the `@real-site` features against five public template demos (Bailard, Loam, Soony and Hester on 7.1; Brine on 7.0). The steps they use only read the page: they do not submit forms, add to a cart or sign up. The sites are third-party demos and can change; a failure there means the template changed or a selector drifted, so check the page before changing a step. To run one site: `npm run test:real-sites -- @bailard`.
+`npm run test:real-sites` runs the `@real-site` features against five public template demos (Bailard, Loam, Soony and Hester on 7.1; Brine on 7.0). They never send anything to the site: they do not submit the form block, add to a cart or sign up. The sites are third-party demos and can change; a failure there means the template changed or a selector drifted, so check the page before changing a step. To run one site: `npm run test:real-sites -- @bailard`.
 
 | Check | Bailard 7.1 | Loam 7.1 | Soony 7.1 | Brine 7.0 | Hester 7.1 |
 | --- | --- | --- | --- | --- | --- |
@@ -55,7 +55,8 @@ npx playwright install chromium
 
 ```bash
 npm run demo:serve &          # serves demo-site/ on http://localhost:8080
-npm test                      # runs tests/features/**/*.feature against it
+npm test                      # runs tests/features/*.feature against it
+npm run test:examples         # checks the JSDoc examples and the feature steps against the step regexes
 ```
 
 CI (`.github/workflows/test.yml`) runs the same flow on every push and pull request.
@@ -142,6 +143,12 @@ Two things to know:
 
 Every step's regex and five Gherkin examples are in the JSDoc block above it; `npm run test:examples` checks that each example matches its own step (and no webship-js core step) and that every feature step is defined exactly once. CI runs it before the suite.
 
+## Lanes, subsets and settings
+
+- `FEATURES=tests/features/a.feature,tests/features/b.feature npm test` runs a subset of the feature files; `CUCUMBER_TAGS=@critical npm test` runs a tag lane (the default run leaves `@wip` out).
+- `cucumber.js` carries the `video` block (`WEBSHIP_VIDEO=on-failure` records the browser) and the `javascript` block (`WEBSHIP_JS_ERROR_MODE=fail` fails a scenario on a JavaScript error; `@js-off` silences one scenario) that webship-js reads.
+- The step timeout is webship-js's own (45 seconds, set when it loads); `WEBSHIP_STEP_TIMEOUT=<milliseconds>` changes it, a `timeout` key in `cucumber.js` does not.
+
 ## Contributing
 
 All changes land via pull request against `2.0.x`; see the [issue tracker](https://github.com/webship/squarespace-steps/issues) for open work.
@@ -149,9 +156,3 @@ All changes land via pull request against `2.0.x`; see the [issue tracker](https
 ## License
 
 MIT, see [LICENSE](LICENSE).
-
-### Lanes, subsets and the settings webship-js reads
-
-- `FEATURES=tests/features/a.feature,tests/features/b.feature npm test` runs a subset of the feature files; `CUCUMBER_TAGS=@critical npm test` runs a tag lane (the default run leaves `@wip` out).
-- `cucumber.js` carries the `video` block (`WEBSHIP_VIDEO=on-failure` records the browser) and the `javascript` block (`WEBSHIP_JS_ERROR_MODE=fail` fails a scenario on a JavaScript error; `@js-off` silences one scenario) that webship-js reads.
-- The step timeout is webship-js's own (45 seconds, set when it loads); `WEBSHIP_STEP_TIMEOUT=<milliseconds>` changes it, a `timeout` key in `cucumber.js` does not.
