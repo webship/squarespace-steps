@@ -18,3 +18,9 @@ Feature: Squarespace 7.1 template demo (Loam)
     Given I am on "/blog"
     Then the site footer should be visible
     And the footer navigation should contain "Instagram"
+
+  Scenario: The blog lists its posts
+    Given I am on "/blog"
+    Then the blog should list 4 posts
+    And the blog post "Our Classic Croissant Recipe" should be visible
+    And the blog post "Our classic croissant recipe" should not be visible

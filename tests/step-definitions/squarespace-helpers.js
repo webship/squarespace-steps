@@ -64,6 +64,20 @@ const SELECTORS = {
   addToCart: '.sqs-add-to-cart-button',
   cartLink: 'a.cart-style-icon, a.Cart',
   cartCount: '.sqs-cart-quantity',
+  // Blog. 7.1: `article.blog-item` with the title in `.blog-title a`, a post
+  // page has `h1.entry-title`. 7.0 (Brine): `.BlogList-item`, `a.BlogList-item-title`,
+  // `h1.BlogItem-title`.
+  blogItem: '.blog-item, .BlogList-item',
+  blogTitleLink: '.blog-title a, a.BlogList-item-title',
+  postTitle: 'h1.entry-title, h1.BlogItem-title',
+  postAuthor: '.blog-author-name, .blog-author, a.Blog-meta-item--author',
+  postDate: 'time.blog-meta-item--date, .blog-date, time.Blog-meta-item--date',
+  // Gallery sections and the site search (the same on 7.1 and 7.0).
+  galleryItem: '.gallery-grid-item, .gallery-reel-item',
+  searchInput: '.sqs-search-page-input input',
+  searchResult: '.search-result',
+  searchResultTitle: '.search-result .sqs-title',
+  searchNotice: '.sqs-search-page-notice',
   // Page content.
   content: 'main, #page, #siteWrapper, .Main-content',
   heroExcluded: 'header, footer, .blog-item, .BlogList-item, .product-list-item, .ProductList-item',

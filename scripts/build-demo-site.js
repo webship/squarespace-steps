@@ -267,6 +267,67 @@ function productPage(p) {
         </div>`;
 }
 
+const POSTS = [
+  { slug: 'seasoning-a-cutting-board', title: 'Seasoning a cutting board the right way', date: '6/2/26', long: 'June 2', author: 'Studio Team', excerpt: 'Oil, patience, and a soft cloth: the whole ritual explained.' },
+  { slug: 'why-we-use-linen', title: 'Why we use linen instead of canvas', date: '5/14/26', long: 'May 14', author: 'Studio Team', excerpt: 'It is heavier to sew, but it ages better than almost anything else.' },
+];
+
+// The blog list as 7.1 renders it (single column layout): each post is an
+// `article.blog-item` with its title in `h1.blog-title a`.
+function blogList() {
+  const items = POSTS.map((p) => `<article class="hentry post-type-text blog-single-column--container entry blog-item is-loaded">
+            <div><a href="/blog/${p.slug}.html" class="image-wrapper"><img src="/assets/img/product-placeholder.svg" alt=""></a></div>
+            <div class="blog-article-spacer"></div>
+            <div class="blog-single-column--text">
+              <div class="blog-meta-section"><span class="blog-meta-primary"><span class="blog-author">${p.author}</span><time class="blog-date" pubdate>${p.date}</time></span><span class="blog-meta-delimiter"></span><span class="blog-meta-secondary"><span class="blog-author">${p.author}</span><time class="blog-date" pubdate>${p.date}</time></span></div>
+              <h1 class="blog-title"><a href="/blog/${p.slug}.html" data-no-animation>${p.title}</a></h1>
+              <div class="blog-excerpt"><div class="blog-excerpt-wrapper"><p>${p.excerpt}</p></div></div>
+              <a class="blog-more-link" href="/blog/${p.slug}.html">Read More</a>
+            </div>
+          </article>`).join('\n          ');
+  return `<div class="blog-list blog-single-column"><div class="blog-single-column--wrapper">
+          ${items}
+          </div></div>`;
+}
+
+// A post page as 7.1 renders it: `h1.entry-title`, the date in
+// `time.blog-meta-item--date`, the author as `.blog-author-name`.
+function blogPost(p) {
+  return `<div class="blog-item-wrapper blog-alternating-side-by-side-item-wrapper">
+          <article class="h-entry entry hentry post-type-text" itemscope itemtype="https://schema.org/BlogPosting"><div class="blog-item-inner-wrapper">
+            <div class="blog-item-top-wrapper">
+              <div class="blog-item-title"><h1 class="entry-title entry-title--large p-name" itemprop="headline">${p.title}</h1></div>
+              <div class="blog-item-meta-wrapper"><div class="blog-item-author-date-wrapper">
+                <time class="dt-published blog-meta-item blog-meta-item--date" datetime="2026-06-02" pubdate><span>${p.long}</span></time>
+                <div class="blog-meta-item blog-meta-item--author p-author author">Written by <a href="/blog.html" class="blog-author-name">${p.author}</a></div>
+              </div></div>
+            </div>
+            <div class="blog-item-content-wrapper"><div class="blog-item-content e-content" itemprop="articleBody"><div class="sqs-html-content"><p>${p.excerpt}</p></div></div></div>
+          </div></article>
+        </div>`;
+}
+
+// A gallery section as 7.1 renders it: a grid of figures. The lightbox is off,
+// as on the public template demos.
+function gallery() {
+  const figure = (n) => `<figure class="gallery-grid-item" data-loaded="true"><div class="gallery-grid-item-wrapper"><img src="/assets/img/product-placeholder.svg" alt="Workshop photo ${n}"></div></figure>`;
+  return `<div class="gallery-section"><div class="gallery-grid gallery-grid--layout-grid" data-lightbox="false" data-columns="3">
+          <div class="gallery-grid-wrapper">${[1, 2, 3].map(figure).join('')}</div>
+        </div></div>`;
+}
+
+// The search page as 7.1 and 7.0 render it: an input, the results as
+// `.search-result` (role link) with a `.sqs-title`, and a notice for no match.
+function searchPage() {
+  return `<div class="sqs-search-page sqs-search-page-content">
+          <div class="sqs-search-page-input sqs-search-input"><form><input placeholder="Type to search" type="text" spellcheck="false" value=""></form></div>
+          <div class="sqs-search-page-output">
+            <div class="sqs-search-page-notice hide"></div>
+            <div class="sqs-search-page-result"><div class="sqs-search-container-list sqs-search-page-list"><div class="search-results"></div></div></div>
+          </div>
+        </div>`;
+}
+
 function page({ file, title, path: p, activeAs, body, scripts = [] }) {
   const pg = { path: p, activeAs };
   const doc = `<!doctype html>
@@ -304,28 +365,16 @@ const pages = [
         ${button('/shop.html', 'Shop the collection')}`),
     section(html('<h2>Welcome to Demo Studio</h2><p>This is a self-contained demo site that carries the markup Squarespace 7.1 renders, so the <code>squarespace-steps</code> suite can run in CI without a Squarespace account.</p>')),
   ].join('\n      ') },
-  { file: 'about.html', title: 'About', path: '/about.html', body: section(html('<h1>About Demo Studio</h1><p>Small batch. Big care.</p><h2>Our story</h2><p>Demo Studio started in a garage with one sewing machine and a stubborn belief that things should be made to last.</p>')) },
+  { file: 'about.html', title: 'About', path: '/about.html', body: [
+    section(html('<h1>About Demo Studio</h1><p>Small batch. Big care.</p><h2>Our story</h2><p>Demo Studio started in a garage with one sewing machine and a stubborn belief that things should be made to last.</p>')),
+    section(gallery()),
+  ].join('\n      ') },
   { file: 'shop.html', title: 'Shop', path: '/shop.html', body: section(productList()) },
   ...PRODUCTS.map((p) => ({ file: `shop/p/${p.slug}.html`, title: p.title, path: `/shop/p/${p.slug}.html`, activeAs: '/shop.html', body: section(productPage(p)) })),
   { file: 'cart.html', title: 'Cart', path: '/cart', body: section(html('<h2>Your cart</h2><p>The cart opens here. The count in the header is the number of items you added.</p>')) },
-  { file: 'blog.html', title: 'Blog', path: '/blog.html', body: `
-    <section class="hero">
-      <h1 class="hero-title">Journal</h1>
-      <p class="hero-subtitle">Notes from the workshop.</p>
-    </section>
-
-    <ul class="BlogList" data-total-posts="2">
-      <li class="BlogList-item">
-        <h2 class="BlogItem-title"><a href="/blog.html#seasoning-a-cutting-board">Seasoning a cutting board the right way</a></h2>
-        <p class="BlogItem-meta">Posted on <time datetime="2026-06-02">June 2, 2026</time></p>
-        <p class="BlogItem-excerpt">Oil, patience, and a soft cloth &mdash; the whole ritual explained.</p>
-      </li>
-      <li class="BlogList-item">
-        <h2 class="BlogItem-title"><a href="/blog.html#why-we-use-linen">Why we use linen instead of canvas</a></h2>
-        <p class="BlogItem-meta">Posted on <time datetime="2026-05-14">May 14, 2026</time></p>
-        <p class="BlogItem-excerpt">It's heavier to sew, but it ages better than almost anything else.</p>
-      </li>
-    </ul>` },
+  { file: 'blog.html', title: 'Blog', path: '/blog.html', body: section(blogList()) },
+  ...POSTS.map((p) => ({ file: `blog/${p.slug}.html`, title: p.title, path: `/blog/${p.slug}.html`, activeAs: '/blog.html', body: section(blogPost(p)) })),
+  { file: 'search.html', title: 'Search', path: '/search', scripts: ['search.js'], body: section(searchPage()) },
   { file: 'contact.html', title: 'Contact', path: '/contact.html', scripts: ['contact-form.js'], body: [
     section(html('<h1>Contact us</h1><p>We usually reply within a day or two.</p>')),
     section(formBlock()),
