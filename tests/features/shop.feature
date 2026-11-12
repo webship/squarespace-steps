@@ -10,21 +10,46 @@ Feature: Shop page
 
   Scenario: Shop lists the product catalog
     Then the shop should list 3 products
-    And I should see "Ceramic Mug"
-    And I should see "Linen Tote Bag"
-    And I should see "Oak Cutting Board"
+    And the shop should list the product "Ceramic Mug"
+    And the shop should list the product "Linen Tote Bag"
+    And the shop should list the product "Oak Cutting Board"
+    But the shop should not list the product "Gift card"
 
   Scenario: Navigation marks Shop as current
     Then "Shop" should be the current navigation item
+
+  Scenario: A product page shows its title and price
+    When I open the product "Ceramic Mug"
+    Then the product title should be "Ceramic Mug"
+    And the product price should be "$24.00"
+    But the product title should not be "Linen Tote Bag"
+    And "Shop" should be the current navigation item
+
+  Scenario: An empty cart counts as zero
+    Then the cart should contain 0 items
 
   Scenario: Adding a single product to the cart
     When I add the product "Ceramic Mug" to the cart
     Then the cart should contain 1 item
 
-  Scenario: Adding multiple products to the cart
+  Scenario: Adding from the product page
+    When I open the product "Linen Tote Bag"
+    And I add the product to the cart
+    Then the cart should contain 1 item
+
+  Scenario: The quantity is added to the cart
+    When I open the product "Oak Cutting Board"
+    And I set the product quantity to 3
+    And I add the product to the cart
+    Then the cart should contain 3 items
+
+  Scenario: The cart keeps its count on the next page
     When I add the product "Ceramic Mug" to the cart
+    And I am on the "/shop.html" page
     And I add the product "Linen Tote Bag" to the cart
-    Then the cart should contain 2 items
+    And I open the cart
+    Then I should be on "/cart"
+    And the cart should contain 2 items
 
   @mobile
   Scenario: Product grid remains usable on mobile
@@ -32,3 +57,5 @@ Feature: Shop page
     And I am on the "/shop.html" page
     Then the shop should list 3 products
     And the mobile navigation toggle should be visible
+    When I add the product "Ceramic Mug" to the cart
+    Then the cart should contain 1 item

@@ -52,6 +52,18 @@ const SELECTORS = {
   newsletterSubmit: '.newsletter-form .newsletter-form-button, .newsletter-form button[type="submit"]',
   newsletterErrors: '.newsletter-form .field-error',
   newsletterConfirmation: '.newsletter-form .form-submission-text, .newsletter-form .form-submission-html',
+  // Commerce. 7.1: the list is `.product-list-item`, a product page has
+  // `h1.product-title` and the add button; 7.0 (Brine): `.ProductList-item`,
+  // `.ProductItem-details-title`. The add button and the quantity field are the
+  // same on both. The cart link goes to /cart.
+  productItem: '.product-list-item, .ProductList-item',
+  productListTitle: '.product-list-item-title, .ProductList-title',
+  productTitle: 'h1.product-title, .ProductItem-details-title',
+  productPrice: '.product-price',
+  productQuantity: '.product-quantity-input input',
+  addToCart: '.sqs-add-to-cart-button',
+  cartLink: 'a.cart-style-icon, a.Cart',
+  cartCount: '.sqs-cart-quantity',
   // Page content.
   content: 'main, #page, #siteWrapper, .Main-content',
   heroExcluded: 'header, footer, .blog-item, .BlogList-item, .product-list-item, .ProductList-item',

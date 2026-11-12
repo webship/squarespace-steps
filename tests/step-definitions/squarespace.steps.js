@@ -10,8 +10,8 @@
 //     'tests/step-definitions/**/*.js',
 //   ],
 //
-// This file loads the step files of the pack (navigation, page and form steps are in
-// their own files) and holds the shop, cart and blog steps. README.md
+// This file loads the step files of the pack (navigation, page, form and shop steps are
+// in their own files) and holds the blog steps. README.md
 // documents every step.
 //
 // The product word is optional in every sentence ("the Squarespace form"
@@ -27,11 +27,8 @@ const { budget, settle, actOrExplain } = require('./squarespace-helpers');
 require('./squarespace-navigation.steps');
 require('./squarespace-page.steps');
 require('./squarespace-forms.steps');
+require('./squarespace-shop.steps');
 
-const PRODUCT_ITEM = '.ProductList-item, .products .grid-item, .grid-item[data-item-id]';
-const PRODUCT_TITLE = '.ProductItem-title, .ProductList-title, .grid-title';
-const ADD_TO_CART = '.sqs-add-to-cart-button';
-const CART_COUNT = '.Cart-count, .sqs-cart-quantity';
 const BLOG_ITEM = '.BlogList-item, .blog-item, article.blog-basic-grid--container';
 const BLOG_TITLE_LINK = '.BlogItem-title a, .BlogList-item-title a, .blog-title a';
 
@@ -66,81 +63,6 @@ async function assertCount(world, selector, expected, { label, hint }) {
     throw friendly({ message: `Expected ${expected} ${label} but found ${count}.`, hint });
   }
 }
-
-// ---------------------------------------------------------------------------
-// Shop / products (Squarespace `.ProductList`)
-// ---------------------------------------------------------------------------
-
-/**
- * Assert the shop lists a given number of products. The count is polled
- * for the wait budget, so a grid that is still rendering is waited for.
- *
- * Example #1: Then the shop should list 3 products
- * Example #2: And the shop should list 1 product
- * Example #3: Then the shop should list 5 products
- * Example #4: Then shop should list 0 products
- * Example #5: And the shop should list 10 products
- *
- */
-Then(/^(?:the )?shop should list (\d+) products?$/, async function (countStr) {
-  await assertCount(this, PRODUCT_ITEM, Number(countStr), {
-    label: 'product(s)',
-    hint: 'Products are `.ProductList-item` (7.0) or `.grid-item` (7.1) elements; check the shop page URL and how many products are visible in the store.',
-  });
-});
-
-/**
- * Add a named product to the cart from the shop page.
- *
- * Example #1: When I add the product "Ceramic Mug" to the cart
- * Example #2: When I add the product "Linen Tote Bag" to the cart
- * Example #3: And I add the product "Oak Cutting Board" to the cart
- * Example #4: When we add the product "Ceramic Mug" to the cart
- * Example #5: When add the product "Linen Tote Bag" to the cart
- *
- */
-When(/^(I |we )*add the product "([^"]*)?" to the cart$/, async function (pronounCase, title) {
-  const item = this.page.locator(PRODUCT_ITEM, { has: this.page.locator(PRODUCT_TITLE, { hasText: title }) });
-  const button = item.locator(ADD_TO_CART).first();
-  await actOrExplain('add the product to the cart', title, async () => {
-    await button.waitFor({ state: 'visible', timeout: budget(this) });
-    await button.click();
-  }, 'The product is matched by its title (`.ProductItem-title` / `.grid-title`) and needs a visible "Add to cart" button (`.sqs-add-to-cart-button`) in its listing item.');
-  await settle(this);
-});
-
-/**
- * Assert the cart contains a given number of items. The cart count is
- * polled for the wait budget, since it updates after the add-to-cart
- * request completes.
- *
- * Example #1: Then the cart should contain 1 item
- * Example #2: And the cart should contain 2 items
- * Example #3: Then the cart should contain 0 items
- * Example #4: Then cart should contain 3 items
- * Example #5: And the cart should contain 1 item
- *
- */
-Then(/^(?:the )?cart should contain (\d+) items?$/, async function (countStr) {
-  const expected = Number(countStr);
-  const timeout = budget(this);
-  try {
-    await this.page.waitForFunction(
-      ({ sel, n }) => {
-        const el = document.querySelector(sel);
-        return Boolean(el) && Number((el.innerText || el.textContent || '').trim()) === n;
-      },
-      { sel: CART_COUNT, n: expected },
-      { timeout }
-    );
-  } catch {
-    const text = (await this.page.locator(CART_COUNT).first().innerText().catch(() => null));
-    throw friendly({
-      message: `Expected the cart count to be ${expected} but found ${text === null ? 'no cart count element' : `"${text.trim()}"`}.`,
-      hint: 'The cart count is `.Cart-count` (7.0) or `.sqs-cart-quantity` (7.1); it updates after the add-to-cart request, so add the product first.',
-    });
-  }
-});
 
 // ---------------------------------------------------------------------------
 // Blog (Squarespace `.BlogList`)

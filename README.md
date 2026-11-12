@@ -35,6 +35,8 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 | Hero title and button | yes | | | |
 | Form block: fill, choose (not sent) | | | yes | |
 | Newsletter block: browser-side validation | | | yes | |
+| Product list, product page, quantity | | | yes | yes |
+| Cart count and cart link | | | yes | yes |
 | Footer | yes | yes | yes | yes |
 | Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes |
 
@@ -90,7 +92,14 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 | `the newsletter form should( not) show the error "<message>"` | Then |
 | `the newsletter form should( not) show the submitted confirmation( message)` | Then |
 | `the shop should list <n> product(s)` | Then |
+| `the shop should( not) list the product "<title>"` | Then |
+| `I open the product "<title>"` | When |
+| `the product title should( not) be "<title>"` | Then |
+| `the product price should( not) be "<price>"` | Then |
+| `I set the product quantity to <n>` | When |
 | `I add the product "<title>" to the cart` | When |
+| `I add the product to the cart` | When |
+| `I open the cart` | When |
 | `the cart should contain <n> item(s)` | Then |
 | `the blog should list <n> post(s)` | Then |
 | `the blog post "<title>" should( not) be visible` | Then |
@@ -98,6 +107,8 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 The product word is optional ("the Squarespace form" and "the form" both match). Every Then step takes `should` or `should not`, every action takes `I`, `we` or no pronoun, and every failure is a friendly message with a hint (no assertion or Playwright stack). Each assertion polls its condition for the `minWaitTime.page` budget (at least 10 s) instead of reading the page once, and every click this pack performs settles the page before the next step.
 
 Forms: a field is found by its label as a person reads it ("Email", not "Email (required)"); a "Name" field is two fields, "First Name" and "Last Name". The form block (`.form-wrapper`) validates on the server: "I submit the form" posts the form to Squarespace, which shows the errors or stores the submission, so use it only on a site you own. The newsletter block (`.newsletter-form`) stops an empty or wrong address in the browser and sends nothing. The confirmation of the form block (`.sqs-form-block-submission-html`) was not observed on a live site, because that needs a real submission; the newsletter confirmation (`.form-submission-text`) and the error markup were read from Squarespace's own scripts and pages.
+
+Shop: the product list shows titles and prices and links to the product page; the "Add to cart" button and the quantity field are on the product page, so "I add the product ... to the cart" opens the product first when it is called on the list. The cart count is the visible `.sqs-cart-quantity` of the header (a hidden or missing count is 0). The add steps create a cart on the site and were run only against `demo-site/`; the real-site features read the list, the product page, the quantity field and the cart link.
 
 Two things to know:
 

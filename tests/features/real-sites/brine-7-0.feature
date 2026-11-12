@@ -34,3 +34,17 @@ Feature: Squarespace 7.0 template demo (Brine)
     And the mobile menu should contain "Shop"
     When I close the mobile menu
     Then the mobile menu should not be open
+
+  Scenario: The shop lists its products and a product page shows its title and price
+    Given I am on "/shop-brine"
+    Then the shop should list 9 products
+    And the shop should list the product "Kimchi"
+    And the cart should contain 0 items
+    When I open the product "Kimchi"
+    Then the product title should be "Kimchi"
+    When I set the product quantity to 2
+
+  Scenario: The cart link opens the cart page
+    Given I am on "/shop-brine"
+    When I open the cart
+    Then I should be on "/cart"
