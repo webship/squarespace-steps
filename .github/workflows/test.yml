@@ -25,6 +25,11 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Check that demo-site/ matches its generator
+        run: |
+          npm run demo:build
+          git diff --exit-code demo-site
+
       - name: Serve demo site
         run: npx http-server demo-site -p 8080 -s &
 

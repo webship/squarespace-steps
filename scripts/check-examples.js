@@ -85,8 +85,14 @@ for (const d of packDefs) {
   }
 }
 
+function featureFiles(dir, base = '') {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory()
+    ? featureFiles(path.join(dir, e.name), path.join(base, e.name))
+    : e.name.endsWith('.feature') ? [path.join(base, e.name)] : []));
+}
+
 let total = 0;
-for (const f of fs.readdirSync(FEATURE_DIR).filter((f) => f.endsWith('.feature'))) {
+for (const f of featureFiles(FEATURE_DIR)) {
   fs.readFileSync(path.join(FEATURE_DIR, f), 'utf8').split('\n').forEach((l, i) => {
     const m = l.match(/^\s*(Given|When|Then|And|But)\s+(.*)$/);
     if (!m) return;
