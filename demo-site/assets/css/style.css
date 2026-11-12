@@ -93,23 +93,27 @@ body.header--menu-open .header-menu { display: block; }
 .BlogItem-title a { text-decoration: none; font-size: 1.4rem; }
 .BlogItem-meta { color: #888; font-size: 0.85rem; }
 
-.form-wrapper { max-width: 480px; margin: 0 auto; padding: 2rem; }
-.form-item { margin-bottom: 1rem; }
-.form-item label { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; }
-.form-item input, .form-item textarea {
+.hidden { display: none !important; }
+.form-wrapper, .newsletter-form-wrapper { max-width: 480px; margin: 0 auto; padding: 1rem 2rem; }
+.form-item, .field { margin-bottom: 1rem; }
+fieldset.form-item { border: 0; padding: 0; margin-left: 0; }
+.form-wrapper label, .newsletter-form label { display: block; margin-bottom: 0.35rem; font-size: 0.9rem; }
+.form-wrapper input, .form-wrapper select, .form-wrapper textarea, .newsletter-form input {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: 2px;
 }
-.form-submit-button {
+.description.required { color: #777; margin-left: 0.25rem; font-size: 0.8rem; }
+.form-field-error, .field-error { color: #b00020; font-size: 0.85rem; margin: 0.25rem 0 0; }
+.form-submit-button, .newsletter-form-button {
   padding: 0.65rem 1.75rem;
   background: #1a1a1a;
   color: #fff;
   border: none;
   cursor: pointer;
 }
-.form-submitted-message { display: none; color: #1a7a1a; margin-top: 1rem; }
+.sqs-form-block-submission-html, .form-submission-text { color: #1a7a1a; margin-top: 1rem; }
 
 .Cart-inner { padding: 2rem; max-width: 600px; margin: 0 auto; }
 .Cart-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #eee; }
