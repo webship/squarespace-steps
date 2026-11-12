@@ -1,6 +1,6 @@
 {
   "name": "@webship-js/squarespace-steps",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "webship-js Cucumber/Playwright steps for Squarespace sites (7.1 and the 7.0 Brine family), with a self-contained demo site.",
   "main": "tests/step-definitions/squarespace.steps.js",
   "files": [
