@@ -41,7 +41,7 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 | Search (a result, no match) | yes | | | yes | |
 | Gallery grid | | | | | yes |
 | Footer | yes | yes | yes | yes | |
-| Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes | |
+| Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes | yes |
 
 ## Setup
 
