@@ -23,11 +23,11 @@ Feature: Squarespace 7.1 template demo (Soony)
 
   Scenario: The form block is filled but not sent
     Given I am on "/contact"
-    When I fill in the Squarespace form field "First Name" with "Jane"
-    And I fill in the Squarespace form field "Last Name" with "Doe"
-    And I fill in the Squarespace form field "Email" with "subscriber@example.com"
-    And I choose "Press inquiry" for the Squarespace form field "Inquiry"
-    And I fill in the Squarespace form field "Message" with "Hello"
+    When I fill in the form field "First Name" with "Jane"
+    And I fill in the form field "Last Name" with "Doe"
+    And I fill in the form field "Email" with "subscriber@example.com"
+    And I choose "Press inquiry" for the form field "Inquiry"
+    And I fill in the form field "Message" with "Hello"
 
   Scenario: The newsletter form stops an empty email address in the browser
     Given I am on "/contact"

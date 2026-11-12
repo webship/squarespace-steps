@@ -56,14 +56,14 @@ async function route(world) {
 /**
  * Switch the announcement bar on in the browser, with a text and a link.
  *
- * Example #1: Given the Squarespace announcement bar is switched on with the text "Free shipping on orders over 50" linking to "/news"
- * Example #2: Given the Squarespace announcement bar is switched on with the text "Closed on Monday" linking to "/contact"
- * Example #3: And the Squarespace announcement bar is switched on with the text "New collection" linking to "/shop"
- * Example #4: Given the Squarespace announcement bar is switched on with the text "Welcome" linking to "/"
- * Example #5: And the Squarespace announcement bar is switched on with the text "Sale" linking to "/sale"
+ * Example #1: Given the announcement bar is switched on with the text "Free shipping on orders over 50" linking to "/news"
+ * Example #2: Given the announcement bar is switched on with the text "Closed on Monday" linking to "/contact"
+ * Example #3: And the announcement bar is switched on with the text "New collection" linking to "/shop"
+ * Example #4: Given the announcement bar is switched on with the text "Welcome" linking to "/"
+ * Example #5: And the announcement bar is switched on with the text "Sale" linking to "/sale"
  *
  */
-Given(/^the Squarespace announcement bar is switched on with the text "([^"]*)" linking to "([^"]*)"$/, async function (text, url) {
+Given(/^the announcement bar is switched on with the text "([^"]*)" linking to "([^"]*)"$/, async function (text, url) {
   (await route(this)).announcement = { text, url };
 });
 
@@ -71,13 +71,13 @@ Given(/^the Squarespace announcement bar is switched on with the text "([^"]*)" 
  * Switch the cookie banner on in the browser, with a text, an accept and a
  * decline button.
  *
- * Example #1: Given the Squarespace cookie banner is switched on with the text "We use cookies to improve your experience."
- * Example #2: Given the Squarespace cookie banner is switched on with the text "This site uses cookies."
- * Example #3: And the Squarespace cookie banner is switched on with the text "Cookies help us run the site."
- * Example #4: Given the Squarespace cookie banner is switched on with the text "Accept our cookies?"
- * Example #5: And the Squarespace cookie banner is switched on with the text "We value your privacy."
+ * Example #1: Given the cookie banner is switched on with the text "We use cookies to improve your experience."
+ * Example #2: Given the cookie banner is switched on with the text "This site uses cookies."
+ * Example #3: And the cookie banner is switched on with the text "Cookies help us run the site."
+ * Example #4: Given the cookie banner is switched on with the text "Accept our cookies?"
+ * Example #5: And the cookie banner is switched on with the text "We value your privacy."
  *
  */
-Given(/^the Squarespace cookie banner is switched on with the text "([^"]*)"$/, async function (text) {
+Given(/^the cookie banner is switched on with the text "([^"]*)"$/, async function (text) {
   (await route(this)).cookie = { text };
 });

@@ -36,14 +36,14 @@ async function fill(world, scope, label, value, hint) {
  * Fill a text, email or message field of the Squarespace form block, found by
  * its label. A "Name" field is two fields: "First Name" and "Last Name".
  *
- * Example #1: When I fill in the Squarespace form field "Email" with "info@webship.co"
- * Example #2: When I fill in the Squarespace form field "First Name" with "Jane"
+ * Example #1: When I fill in the form field "Email" with "info@webship.co"
+ * Example #2: When I fill in the form field "First Name" with "Jane"
  * Example #3: And I fill in the form field "Message" with "Hello there"
- * Example #4: When we fill in the Squarespace form field "Last Name" with "Doe"
+ * Example #4: When we fill in the form field "Last Name" with "Doe"
  * Example #5: When fill in the form field "Subject" with "Question about an order"
  *
  */
-When(/^(I |we )*fill in the (?:Squarespace )?form field "([^"]*)" with "([^"]*)"$/, async function (pronounCase, label, value) {
+When(/^(I |we )*fill in the form field "([^"]*)" with "([^"]*)"$/, async function (pronounCase, label, value) {
   await fill(this, SELECTORS.form, label, value, FORM_HINT);
 });
 
@@ -51,14 +51,14 @@ When(/^(I |we )*fill in the (?:Squarespace )?form field "([^"]*)" with "([^"]*)"
  * Choose an option of a dropdown field of the Squarespace form block, by the
  * option text.
  *
- * Example #1: When I choose "Press inquiry" for the Squarespace form field "Inquiry"
- * Example #2: When we choose "Customer service" for the Squarespace form field "Inquiry"
+ * Example #1: When I choose "Press inquiry" for the form field "Inquiry"
+ * Example #2: When we choose "Customer service" for the form field "Inquiry"
  * Example #3: And I choose "Stockist inquiry" for the form field "Inquiry"
  * Example #4: When choose "Other" for the form field "Topic"
  * Example #5: And we choose "France" for the form field "Country"
  *
  */
-When(/^(I |we )*choose "([^"]*)" for the (?:Squarespace )?form field "([^"]*)"$/, async function (pronounCase, option, label) {
+When(/^(I |we )*choose "([^"]*)" for the form field "([^"]*)"$/, async function (pronounCase, option, label) {
   const field = await findField(this, SELECTORS.form, label, FORM_HINT);
   await actOrExplain('choose the option', option, () => field.selectOption({ label: option }),
     `${FORM_HINT} The field must be a dropdown that offers the option "${option}".`);
@@ -69,14 +69,14 @@ When(/^(I |we )*choose "([^"]*)" for the (?:Squarespace )?form field "([^"]*)"$/
  * confirmation have a chance to appear. The form is posted to Squarespace,
  * which stores the submission: do not use this on a site you do not own.
  *
- * Example #1: When I submit the Squarespace form
- * Example #2: When we submit the Squarespace form
- * Example #3: And I submit the Squarespace form
+ * Example #1: When I submit the form
+ * Example #2: When we submit the form
+ * Example #3: And I submit the form
  * Example #4: When I submit the form
  * Example #5: And we submit the form
  *
  */
-When(/^(I |we )*submit the (?:Squarespace )?form$/, async function (pronounCase) {
+When(/^(I |we )*submit the form$/, async function (pronounCase) {
   await clickVisible(this, { selector: SELECTORS.formSubmit, what: 'the form submit button', hint: FORM_HINT });
   await settle(this);
 });
@@ -86,14 +86,14 @@ When(/^(I |we )*submit the (?:Squarespace )?form$/, async function (pronounCase)
  * error. After a failed submission the field has `aria-invalid="true"` and an
  * error message.
  *
- * Example #1: Then the Squarespace form should show an error for the field "Email"
+ * Example #1: Then the form should show an error for the field "Email"
  * Example #2: And the form should show an error for the field "Message"
- * Example #3: And the Squarespace form should show an error for the field "First Name"
+ * Example #3: And the form should show an error for the field "First Name"
  * Example #4: But the form should not show an error for the field "Email"
- * Example #5: And the Squarespace form should not show an error for the field "Inquiry"
+ * Example #5: And the form should not show an error for the field "Inquiry"
  *
  */
-Then(/^(?:the )?(?:Squarespace )?form should( not)* show an error for the field "([^"]*)"$/, async function (notCase, label) {
+Then(/^(?:the )?form should( not)* show an error for the field "([^"]*)"$/, async function (notCase, label) {
   await assertFieldError(this, SELECTORS.form, label, Boolean(notCase),
     `${FORM_HINT} Errors appear after the form was submitted with a field missing.`);
 });
@@ -102,14 +102,14 @@ Then(/^(?:the )?(?:Squarespace )?form should( not)* show an error for the field 
  * Assert the Squarespace form block shows (or does not show) an error
  * message with exactly this text, such as "Email is required.".
  *
- * Example #1: Then the Squarespace form should show the error "Email is required."
+ * Example #1: Then the form should show the error "Email is required."
  * Example #2: And the form should show the error "Message is required."
- * Example #3: And the Squarespace form should show the error "First Name is required."
+ * Example #3: And the form should show the error "First Name is required."
  * Example #4: But the form should not show the error "Email is required."
- * Example #5: And the Squarespace form should not show the error "Inquiry is required."
+ * Example #5: And the form should not show the error "Inquiry is required."
  *
  */
-Then(/^(?:the )?(?:Squarespace )?form should( not)* show the error "([^"]*)"$/, async function (notCase, message) {
+Then(/^(?:the )?form should( not)* show the error "([^"]*)"$/, async function (notCase, message) {
   await assertScan(this, { selector: SELECTORS.formErrors, text: message, visible: true }, {
     not: Boolean(notCase),
     what: `the form error "${message}"`,
@@ -122,14 +122,14 @@ Then(/^(?:the )?(?:Squarespace )?form should( not)* show the error "([^"]*)"$/, 
  * confirmation after a submission. The text is the one set in the form's
  * storage settings.
  *
- * Example #1: Then the Squarespace form should show the submitted confirmation
+ * Example #1: Then the form should show the submitted confirmation
  * Example #2: And the form should show the submitted confirmation
  * Example #3: Then the form should not show the submitted confirmation message
  * Example #4: Then I should see the form submitted confirmation
  * Example #5: And we should not see the form submitted confirmation
  *
  */
-Then(/^(?:(?:the )?(?:Squarespace )?form should( not)* show the submitted confirmation(?: message)?|(?:I |we )*should( not)* see the form submitted confirmation)$/, async function (notShow, notSee) {
+Then(/^(?:(?:the )?form should( not)* show the submitted confirmation(?: message)?|(?:I |we )*should( not)* see the form submitted confirmation)$/, async function (notShow, notSee) {
   await assertScan(this, { selector: SELECTORS.formConfirmation, visible: true, nonEmpty: true }, {
     not: Boolean(notShow || notSee),
     what: 'the form confirmation',

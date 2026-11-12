@@ -12,31 +12,31 @@ Feature: Contact page
     Then "Contact" should be the current navigation item
 
   Scenario: A form submitted empty shows an error on every required field
-    When I submit the Squarespace form
-    Then the Squarespace form should show an error for the field "First Name"
-    And the Squarespace form should show an error for the field "Email"
-    And the Squarespace form should show an error for the field "Inquiry"
-    And the Squarespace form should show an error for the field "Message"
-    And the Squarespace form should show the error "Email is required."
-    And the Squarespace form should not show the submitted confirmation
+    When I submit the form
+    Then the form should show an error for the field "First Name"
+    And the form should show an error for the field "Email"
+    And the form should show an error for the field "Inquiry"
+    And the form should show an error for the field "Message"
+    And the form should show the error "Email is required."
+    And the form should not show the submitted confirmation
 
   Scenario: A field that was filled in keeps no error
-    When I fill in the Squarespace form field "Email" with "subscriber@example.com"
-    And I choose "Press inquiry" for the Squarespace form field "Inquiry"
-    And I submit the Squarespace form
-    Then the Squarespace form should not show an error for the field "Email"
-    And the Squarespace form should not show an error for the field "Inquiry"
-    And the Squarespace form should show an error for the field "Message"
-    And the Squarespace form should not show the error "Email is required."
+    When I fill in the form field "Email" with "subscriber@example.com"
+    And I choose "Press inquiry" for the form field "Inquiry"
+    And I submit the form
+    Then the form should not show an error for the field "Email"
+    And the form should not show an error for the field "Inquiry"
+    And the form should show an error for the field "Message"
+    And the form should not show the error "Email is required."
 
   Scenario: Submitting the contact form shows a confirmation
-    When I fill in the Squarespace form field "First Name" with "Jane"
-    And I fill in the Squarespace form field "Last Name" with "Doe"
-    And I fill in the Squarespace form field "Email" with "jane@example.com"
-    And I choose "Customer service" for the Squarespace form field "Inquiry"
-    And I fill in the Squarespace form field "Message" with "Hello, I love your work!"
-    And I submit the Squarespace form
-    Then the Squarespace form should show the submitted confirmation
+    When I fill in the form field "First Name" with "Jane"
+    And I fill in the form field "Last Name" with "Doe"
+    And I fill in the form field "Email" with "jane@example.com"
+    And I choose "Customer service" for the form field "Inquiry"
+    And I fill in the form field "Message" with "Hello, I love your work!"
+    And I submit the form
+    Then the form should show the submitted confirmation
 
   Scenario: The newsletter form stops an empty email address
     When I submit the newsletter form
@@ -61,4 +61,4 @@ Feature: Contact page
     And I am on the "/contact.html" page
     Then I should see "Contact us"
     And the mobile navigation toggle should be visible
-    And I fill in the Squarespace form field "Email" with "subscriber@example.com"
+    And I fill in the form field "Email" with "subscriber@example.com"

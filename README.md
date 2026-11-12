@@ -85,12 +85,12 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 | `the site should( not) use Squarespace 7.1\|7.0` | Then |
 | `the site title should( not) be "<title>"` | Then |
 | `the site language should( not) be "<language>"` | Then |
-| `I fill in the (Squarespace )form field "<label>" with "<value>"` | When |
-| `I choose "<option>" for the (Squarespace )form field "<label>"` | When |
-| `I submit the (Squarespace )form` | When |
-| `the (Squarespace )form should( not) show an error for the field "<label>"` | Then |
-| `the (Squarespace )form should( not) show the error "<message>"` | Then |
-| `the (Squarespace )form should( not) show the submitted confirmation( message)` / `I should( not) see the form submitted confirmation` | Then |
+| `I fill in the form field "<label>" with "<value>"` | When |
+| `I choose "<option>" for the form field "<label>"` | When |
+| `I submit the form` | When |
+| `the form should( not) show an error for the field "<label>"` | Then |
+| `the form should( not) show the error "<message>"` | Then |
+| `the form should( not) show the submitted confirmation( message)` / `I should( not) see the form submitted confirmation` | Then |
 | `I fill in the newsletter form field "<label>" with "<value>"` | When |
 | `I submit the newsletter form` | When |
 | `the newsletter form should( not) show an error for the field "<label>"` | Then |
@@ -126,7 +126,8 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 | `I accept the cookies` | When |
 | `I decline the cookies` | When |
 
-The product word is optional ("the Squarespace form" and "the form" both match). Every Then step takes `should` or `should not`, every action takes `I`, `we` or no pronoun, and every failure is a friendly message with a hint (no assertion or Playwright stack). Each assertion polls its condition for the `minWaitTime.page` budget (at least 10 s) instead of reading the page once, and every click this pack performs settles the page before the next step.
+Every Then step takes `should` or `should not`, every action takes `I`, `we` or no pronoun, and every failure is a friendly message with a hint (no assertion or Playwright stack). Each assertion polls its condition for the `minWaitTime.page` budget (at least 10 s) instead of reading the page once, and every click this pack performs settles the page before the next step.
+
 
 Forms: a field is found by its label as a person reads it ("Email", not "Email (required)"); a "Name" field is two fields, "First Name" and "Last Name". The form block (`.form-wrapper`) validates on the server: "I submit the form" posts the form to Squarespace, which shows the errors or stores the submission, so use it only on a site you own. The newsletter block (`.newsletter-form`) stops an empty or wrong address in the browser and sends nothing. The confirmation of the form block (`.sqs-form-block-submission-html`) was not observed on a live site, because that needs a real submission; the newsletter confirmation (`.form-submission-text`) and the error markup were read from Squarespace's own scripts and pages.
 
