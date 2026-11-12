@@ -25,3 +25,4 @@ require('./squarespace-forms.steps');
 require('./squarespace-shop.steps');
 require('./squarespace-blog.steps');
 require('./squarespace-content.steps');
+require('./squarespace-banners.steps');

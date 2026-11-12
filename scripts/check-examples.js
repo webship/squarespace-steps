@@ -61,8 +61,9 @@ function extractDefs(src, file) {
 function loadDefs(dir, label) {
   if (!fs.existsSync(dir)) return [];
   let defs = [];
-  for (const f of fs.readdirSync(dir).filter((f) => f.endsWith('.js'))) {
-    defs = defs.concat(extractDefs(fs.readFileSync(path.join(dir, f), 'utf8'), label + f));
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) defs = defs.concat(loadDefs(path.join(dir, entry.name), `${label}${entry.name}/`));
+    else if (entry.name.endsWith('.js')) defs = defs.concat(extractDefs(fs.readFileSync(path.join(dir, entry.name), 'utf8'), label + entry.name));
   }
   return defs;
 }

@@ -134,3 +134,14 @@ fieldset.form-item { border: 0; padding: 0; margin-left: 0; }
 .search-result { padding: 1rem 0; border-bottom: 1px solid #eee; cursor: pointer; }
 .sqs-title { font-weight: 600; }
 .hide { display: none; }
+
+.sqs-announcement-bar { background: #1a1a1a; color: #fff; text-align: center; position: relative; }
+.sqs-announcement-bar-text { padding: 0.6rem 2.5rem; }
+.sqs-announcement-bar-url { position: absolute; inset: 0; }
+.sqs-announcement-bar-close { position: absolute; right: 1rem; top: 0.5rem; cursor: pointer; z-index: 2; }
+.sqs-announcement-bar-close::before { content: "x"; }
+.sqs-announcement-bar-hidden { height: 0; overflow: hidden; }
+.gdpr-cookie-banner { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 1px solid #ccc; padding: 1rem 2rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; z-index: 10; }
+.gdpr-cookie-banner p { margin: 0; }
+.gdpr-cookie-banner button { padding: 0.5rem 1.25rem; border: 1px solid #1a1a1a; background: #fff; cursor: pointer; }
+.gdpr-cookie-banner button.accept { background: #1a1a1a; color: #fff; }
