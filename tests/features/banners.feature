@@ -9,7 +9,7 @@ Feature: Announcement bar and cookie banner
   So that I know the news of the site and stay in control of my data
 
   Scenario: The announcement bar shows its text and link
-    Given the Squarespace announcement bar is switched on with the text "Free shipping on orders over 50" linking to "/shop.html"
+    Given the announcement bar is switched on with the text "Free shipping on orders over 50" linking to "/shop.html"
     And I am on the homepage
     Then the announcement bar should be visible
     And the announcement bar should say "Free shipping on orders over 50"
@@ -18,7 +18,7 @@ Feature: Announcement bar and cookie banner
     And the announcement bar should not link to "/contact.html"
 
   Scenario: Closing the announcement bar hides it
-    Given the Squarespace announcement bar is switched on with the text "Free shipping on orders over 50" linking to "/shop.html"
+    Given the announcement bar is switched on with the text "Free shipping on orders over 50" linking to "/shop.html"
     And I am on the homepage
     When I close the announcement bar
     Then the announcement bar should not be visible
@@ -28,7 +28,7 @@ Feature: Announcement bar and cookie banner
     Then the announcement bar should not be visible
 
   Scenario: The cookie banner shows its text and goes away when cookies are accepted
-    Given the Squarespace cookie banner is switched on with the text "We use cookies to improve your experience."
+    Given the cookie banner is switched on with the text "We use cookies to improve your experience."
     And I am on the homepage
     Then the cookie banner should be visible
     And the cookie banner should say "We use cookies to improve your experience."
@@ -36,13 +36,13 @@ Feature: Announcement bar and cookie banner
     Then the cookie banner should not be visible
 
   Scenario: Declining the cookies removes the banner too
-    Given the Squarespace cookie banner is switched on with the text "We use cookies to improve your experience."
+    Given the cookie banner is switched on with the text "We use cookies to improve your experience."
     And I am on the homepage
     When I decline the cookies
     Then the cookie banner should not be visible
 
   Scenario: The choice is kept on the next page
-    Given the Squarespace cookie banner is switched on with the text "We use cookies to improve your experience."
+    Given the cookie banner is switched on with the text "We use cookies to improve your experience."
     And I am on the homepage
     When I accept the cookies
     And I am on the "/about.html" page
