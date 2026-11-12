@@ -154,6 +154,65 @@ function section(inner, cls = '') {
       </section>`;
 }
 
+// The form block as 7.1 renders it: a fieldset for the name, a native select,
+// labels that carry a "(required)" mark. The submission message is filled by
+// the page script, as the real block does after a successful post.
+function formBlock() {
+  const required = '<span class="description required">(required)</span>';
+  return `<div class="sqs-block sqs-block-form form-block"><div class="sqs-block-content"><div class="sqs-site-style-form">
+          <div class="sqs-form-block-submission-html"></div>
+          <div class="form-wrapper"><form autocomplete="on" class="react-form-contents" novalidate>
+            <div class="field-list">
+              <fieldset class="form-item fields name" id="name-field">
+                <legend><div class="title"><span>Name</span></div></legend>
+                <div class="field first-name"><label class="caption" for="name-fname-field"><div class="caption-text">First Name${required}</div></label><input aria-invalid="false" aria-required="true" autocomplete="given-name" id="name-fname-field" name="fname" type="text" value=""></div>
+                <div class="field last-name"><label class="caption" for="name-lname-field"><div class="caption-text">Last Name${required}</div></label><input aria-invalid="false" aria-required="true" autocomplete="family-name" id="name-lname-field" name="lname" type="text" value=""></div>
+              </fieldset>
+              <div class="form-item field email required" id="email-item">
+                <label for="email-field" class="title"><div><span>Email</span>${required}</div></label>
+                <input aria-invalid="false" aria-required="true" id="email-field" type="email" value="">
+              </div>
+              <div class="form-item field select required" id="select-item">
+                <label for="select-field" class="title"><div><span>Inquiry</span>${required}</div></label>
+                <select id="select-field" aria-label="Inquiry" aria-invalid="false" required>
+                  <option value="" disabled hidden selected>Select an option</option>
+                  <option value="Customer service">Customer service</option>
+                  <option value="Stockist inquiry">Stockist inquiry</option>
+                  <option value="Press inquiry">Press inquiry</option>
+                </select>
+              </div>
+              <div class="form-item field textarea required" id="textarea-item">
+                <label for="textarea-field" class="title"><div><span>Message</span>${required}</div></label>
+                <textarea id="textarea-field" aria-invalid="false" aria-required="true" rows="5"></textarea>
+              </div>
+            </div>
+            <div class="form-button-wrapper form-button-wrapper--align-left"><button type="submit" class="button sqs-system-button form-submit-button"><span class="form-submit-button-label">Send</span></button></div>
+          </form></div>
+        </div></div></div>`;
+}
+
+// The newsletter block as 7.1 renders it: browser-side validation with a
+// div.field-error in a .form-item.error, and a hidden .form-submission-text.
+function newsletterBlock() {
+  return `<div class="sqs-block sqs-block-newsletter newsletter-block"><div class="sqs-block-content">
+          <div class="newsletter-form-wrapper"><form class="newsletter-form" novalidate>
+            <header class="newsletter-form-header"><h2 class="newsletter-form-header-title">Stay in the loop</h2><div class="newsletter-form-header-description"><p>Get updates on new releases.</p></div></header>
+            <div class="newsletter-form-body">
+              <div class="newsletter-form-fields-wrapper form-fields">
+                <div id="newsletter-email-item" class="newsletter-form-field-wrapper form-item field email required">
+                  <label class="newsletter-form-field-label title" for="newsletter-email-field">Email Address</label>
+                  <input id="newsletter-email-field" class="newsletter-form-field-element field-element" name="email" autocomplete="email" type="email" spellcheck="false" placeholder="Email Address">
+                </div>
+              </div>
+              <div class="newsletter-form-button-wrapper submit-wrapper"><button class="newsletter-form-button" type="submit" value="Sign Up"><span class="newsletter-form-button-label">Sign Up</span></button></div>
+            </div>
+            <div class="newsletter-form-footnote"><p></p></div>
+            <div class="hidden form-submission-text"><p>Thank you!</p></div>
+            <div class="hidden form-submission-html"></div>
+          </form></div>
+        </div></div>`;
+}
+
 function page({ file, title, path: p, body, scripts = [] }) {
   const pg = { path: p };
   const doc = `<!doctype html>
@@ -247,28 +306,11 @@ const pages = [
         <p class="BlogItem-excerpt">It's heavier to sew, but it ages better than almost anything else.</p>
       </li>
     </ul>` },
-  { file: 'contact.html', title: 'Contact', path: '/contact.html', scripts: ['contact-form.js'], body: `
-    <section class="hero">
-      <h1 class="hero-title">Contact us</h1>
-      <p class="hero-subtitle">We usually reply within a day or two.</p>
-    </section>
-
-    <form class="form-wrapper sqs-block-form" id="contact-form" data-form-id="contact">
-      <div class="form-item">
-        <label for="contact-name">Name</label>
-        <input type="text" id="contact-name" name="name" required>
-      </div>
-      <div class="form-item">
-        <label for="contact-email">Email</label>
-        <input type="email" id="contact-email" name="email" required>
-      </div>
-      <div class="form-item">
-        <label for="contact-message">Message</label>
-        <textarea id="contact-message" name="message" rows="5" required></textarea>
-      </div>
-      <button type="submit" class="form-submit-button">Send message</button>
-      <p class="form-submitted-message" role="status">Thanks &mdash; your message has been sent.</p>
-    </form>` },
+  { file: 'contact.html', title: 'Contact', path: '/contact.html', scripts: ['contact-form.js'], body: [
+    section(html('<h1>Contact us</h1><p>We usually reply within a day or two.</p>')),
+    section(formBlock()),
+    section(newsletterBlock()),
+  ].join('\n      ') },
 ];
 
 fs.mkdirSync(OUT, { recursive: true });

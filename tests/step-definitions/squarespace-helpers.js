@@ -42,6 +42,16 @@ const SELECTORS = {
   menuOpenClasses: ['header--menu-open', 'is-mobile-overlay-active'],
   menuItems: '.header-menu-nav-item:not(.header-menu-controls) a, a.Mobile-overlay-nav-item',
   menuFolderLink: '.header-menu-nav-item a[data-folder-id]',
+  // Forms. The form block (`.form-wrapper`) validates on the server; the
+  // newsletter block (`.newsletter-form`) validates in the browser.
+  form: '.form-wrapper',
+  formSubmit: '.form-wrapper .form-submit-button, .form-wrapper button[type="submit"]',
+  formErrors: '.form-wrapper .form-field-error, .form-wrapper .field-error',
+  formConfirmation: '.form-wrapper .form-submission-text, .form-wrapper .form-submission-html, .sqs-form-block-submission-html',
+  newsletter: '.newsletter-form',
+  newsletterSubmit: '.newsletter-form .newsletter-form-button, .newsletter-form button[type="submit"]',
+  newsletterErrors: '.newsletter-form .field-error',
+  newsletterConfirmation: '.newsletter-form .form-submission-text, .newsletter-form .form-submission-html',
   // Page content.
   content: 'main, #page, #siteWrapper, .Main-content',
   heroExcluded: 'header, footer, .blog-item, .BlogList-item, .product-list-item, .ProductList-item',
@@ -97,7 +107,7 @@ function scanInPage(args) {
   const els = [...document.querySelectorAll(args.selector)];
   const rows = els.map((el) => ({ label: labelOf(el), shown: shown(el) }));
   const hasText = typeof args.text === 'string';
-  const matched = rows.filter((r) => (!hasText || r.label === args.text) && (!args.visible || r.shown)).length;
+  const matched = rows.filter((r) => (!hasText || r.label === args.text) && (!args.visible || r.shown) && (!args.nonEmpty || r.label)).length;
   return {
     total: rows.length,
     visible: rows.filter((r) => r.shown).length,
@@ -264,7 +274,65 @@ async function assertFolderPage(world, name, label, not, hint) {
   }
 }
 
+/**
+ * Find a form control by the caption of its label inside a visible form.
+ * Self-contained, serialised into the page. The caption is the label text
+ * without the "(required)" mark and without an error message, so "Email"
+ * finds "Email (required)" but "Name" does not find "First Name". A control
+ * without a label (a dropdown) is found by its aria-label.
+ */
+function fieldInPage(args) {
+  const norm = (s) => String(s || '').replace(/\s+/g, ' ').trim();
+  const shown = (el) => el.getClientRects().length > 0 && getComputedStyle(el).visibility !== 'hidden';
+  for (const scope of document.querySelectorAll(args.scope)) {
+    if (!shown(scope)) continue;
+    for (const label of scope.querySelectorAll('label')) {
+      const copy = label.cloneNode(true);
+      copy.querySelectorAll('.description, .form-field-error, .field-error').forEach((n) => n.remove());
+      if (norm(copy.textContent) === args.label && label.control) return label.control;
+    }
+    for (const control of scope.querySelectorAll('input, select, textarea')) {
+      if (control.getAttribute('aria-label') === args.label) return control;
+    }
+  }
+  return null;
+}
+
+/** Wait for the form control and return it as an element handle. */
+async function findField(world, scope, label, hint) {
+  const expression = `(${fieldInPage.toString()})(${JSON.stringify({ scope, label })})`;
+  try {
+    await world.page.waitForFunction(`${expression} !== null`, undefined, { timeout: budget(world) });
+  } catch {
+    const labels = await world.page.evaluate(`[...document.querySelectorAll(${JSON.stringify(scope + ' label')})].map((l) => l.textContent.replace(/\\s+/g, ' ').trim()).slice(0, 12)`).catch(() => []);
+    throw friendly({ message: `Expected a form field labeled "${label}", but none was found within ${budget(world)} ms.${listLabels(labels)}`, hint });
+  }
+  return (await world.page.evaluateHandle(expression)).asElement();
+}
+
+/**
+ * Wait until the form control labeled `label` shows (or, with `not`, does not
+ * show) an error: `aria-invalid="true"` or an error message in its form item.
+ */
+async function assertFieldError(world, scope, label, not, hint) {
+  const expression = `(() => { const c = (${fieldInPage.toString()})(${JSON.stringify({ scope, label })}); if (!c) return null; const item = c.closest('.form-item, .field'); return c.getAttribute('aria-invalid') === 'true' || Boolean(item && item.querySelector('.form-field-error, .field-error')); })()`;
+  try {
+    await world.page.waitForFunction(`${expression} === ${!not}`, undefined, { timeout: budget(world) });
+  } catch {
+    const state = await world.page.evaluate(expression).catch(() => null);
+    throw friendly({
+      message: state === null
+        ? `Expected a form field labeled "${label}", but none was found.`
+        : not ? `Expected no error on the "${label}" field, but it shows one.` : `Expected an error on the "${label}" field, but it shows none.`,
+      hint,
+    });
+  }
+}
+
 module.exports = {
+  fieldInPage,
+  findField,
+  assertFieldError,
   SELECTORS,
   heroTitle,
   heroInPage,

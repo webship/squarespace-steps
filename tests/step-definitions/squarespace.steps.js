@@ -10,8 +10,8 @@
 //     'tests/step-definitions/**/*.js',
 //   ],
 //
-// This file loads the step files of the pack (navigation and page steps are in
-// their own files) and holds the form, shop, cart and blog steps. README.md
+// This file loads the step files of the pack (navigation, page and form steps are in
+// their own files) and holds the shop, cart and blog steps. README.md
 // documents every step.
 //
 // The product word is optional in every sentence ("the Squarespace form"
@@ -26,10 +26,8 @@ const { budget, settle, actOrExplain } = require('./squarespace-helpers');
 
 require('./squarespace-navigation.steps');
 require('./squarespace-page.steps');
+require('./squarespace-forms.steps');
 
-const FORM = '.form-wrapper';
-const FORM_SUBMIT = '.form-wrapper .form-submit-button, .form-wrapper input[type="submit"], .form-wrapper button[type="submit"]';
-const FORM_SUBMITTED = '.form-submitted-message, .form-submission-text';
 const PRODUCT_ITEM = '.ProductList-item, .products .grid-item, .grid-item[data-item-id]';
 const PRODUCT_TITLE = '.ProductItem-title, .ProductList-title, .grid-title';
 const ADD_TO_CART = '.sqs-add-to-cart-button';
@@ -37,7 +35,6 @@ const CART_COUNT = '.Cart-count, .sqs-cart-quantity';
 const BLOG_ITEM = '.BlogList-item, .blog-item, article.blog-basic-grid--container';
 const BLOG_TITLE_LINK = '.BlogItem-title a, .BlogList-item-title a, .blog-title a';
 
-const FORM_HINT = 'Squarespace form blocks render inside `.form-wrapper`; the field is found by its label text and the submit button by `.form-submit-button` or `[type="submit"]`.';
 
 /**
  * Wait until `locator` has (or, with `notCase`, has no) match in `state`,
@@ -69,67 +66,6 @@ async function assertCount(world, selector, expected, { label, hint }) {
     throw friendly({ message: `Expected ${expected} ${label} but found ${count}.`, hint });
   }
 }
-
-// ---------------------------------------------------------------------------
-// Forms (Squarespace `.form-wrapper` / `.sqs-block-form`)
-// ---------------------------------------------------------------------------
-
-/**
- * Fill a labeled field inside the Squarespace form with a value.
- *
- * Example #1: When I fill in the Squarespace form field "Name" with "Jane Doe"
- * Example #2: When I fill in the Squarespace form field "Email" with "jane@example.com"
- * Example #3: And I fill in the form field "Message" with "Hello there"
- * Example #4: When we fill in the Squarespace form field "Name" with "John Smith"
- * Example #5: When fill in the form field "Email" with "test@demo.com"
- *
- */
-When(/^(I |we )*fill in the (?:Squarespace )?form field "([^"]*)?" with "([^"]*)?"$/, async function (pronounCase, label, value) {
-  const field = this.page.locator(FORM).first().getByLabel(label).first();
-  await actOrExplain('fill in the form field', label, async () => {
-    await field.waitFor({ state: 'visible', timeout: budget(this) });
-    await field.fill(value);
-  }, FORM_HINT);
-});
-
-/**
- * Submit the Squarespace form on the current page and settle, so the
- * confirmation has a chance to replace the form.
- *
- * Example #1: When I submit the Squarespace form
- * Example #2: When we submit the Squarespace form
- * Example #3: And I submit the Squarespace form
- * Example #4: When I submit the form
- * Example #5: And we submit the form
- *
- */
-When(/^(I |we )*submit the (?:Squarespace )?form$/, async function (pronounCase) {
-  const submit = this.page.locator(FORM_SUBMIT).first();
-  await actOrExplain('submit', 'the form', async () => {
-    await submit.waitFor({ state: 'visible', timeout: budget(this) });
-    await submit.click();
-  }, FORM_HINT);
-  await settle(this);
-});
-
-/**
- * Assert the Squarespace form does (or does not) show its post-submission
- * confirmation message.
- *
- * Example #1: Then the Squarespace form should show the submitted confirmation
- * Example #2: And the form should show the submitted confirmation
- * Example #3: Then the form should not show the submitted confirmation message
- * Example #4: Then I should see the form submitted confirmation
- * Example #5: And we should not see the form submitted confirmation
- *
- */
-Then(/^(?:(?:the )?(?:Squarespace )?form should( not)* show the submitted confirmation(?: message)?|(?:I |we )*should( not)* see the form submitted confirmation)$/, async function (notShow, notSee) {
-  await assertPresence(this.page.locator(FORM_SUBMITTED), notShow || notSee, {
-    label: 'the form submitted confirmation (`.form-submitted-message` / `.form-submission-text`)',
-    hint: 'Squarespace replaces the form with its confirmation text after a successful submit; submit the form first and check every required field was filled.',
-    timeout: budget(this),
-  });
-});
 
 // ---------------------------------------------------------------------------
 // Shop / products (Squarespace `.ProductList`)
