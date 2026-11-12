@@ -10,9 +10,16 @@ Feature: Home page
 
   Scenario: Hero section is shown
     Then the hero title should be "Handmade goods, honestly sourced."
+    And the hero title should not be "About Demo Studio"
     And the hero call-to-action button should link to "/shop.html"
 
-  Scenario: Main navigation lists every main page
+  Scenario: The page reports its Squarespace facts
+    Then the site should use Squarespace 7.1
+    And the site should not use Squarespace 7.0
+    And the site title should be "Demo Studio"
+    And the site language should be "en-US"
+
+  Scenario: Main navigation lists the main pages
     Then the site navigation should contain "Home"
     And the site navigation should contain "Shop"
     And the site navigation should contain "About"
@@ -24,9 +31,10 @@ Feature: Home page
     Then the site footer should be visible
     And the footer should show a copyright notice
     And the footer navigation should contain "Instagram"
+    And the footer navigation should not contain "Checkout"
 
   @mobile
-  Scenario: Navigation collapses to a toggle on mobile
+  Scenario: Navigation collapses to a burger button on mobile
     When I set the viewport to the "mobile" breakpoint
     And I am on the homepage
     Then the mobile navigation toggle should be visible

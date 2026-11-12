@@ -1,4 +1,4 @@
-/* Minimal demo styling approximating a Squarespace 7.1 template layout. */
+/* Minimal demo styling for the markup Squarespace 7.1 renders. */
 
 * { box-sizing: border-box; }
 
@@ -11,50 +11,42 @@ body {
 
 a { color: inherit; }
 
-.Header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid #eee;
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.header-skip-link { position: absolute; left: -9999px; }
+.header-skip-link:focus { left: 1rem; top: 1rem; background: #fff; padding: 0.5rem; }
+
+.header-inner { padding: 1.25rem 2rem; border-bottom: 1px solid #eee; }
+.header-display-desktop .header-title-nav-wrapper,
+.header-display-mobile .header-title-nav-wrapper { display: flex; align-items: center; justify-content: space-between; }
+.header-display-mobile { display: none; }
+.header-title-text a { font-size: 1.25rem; font-weight: 700; text-decoration: none; }
+.header-nav-list { display: flex; gap: 1.5rem; }
+.header-nav-item { position: relative; }
+.header-nav-item > a, .header-nav-folder-title { text-decoration: none; font-size: 0.95rem; letter-spacing: 0.04em; border: 0; background: none; cursor: pointer; font-family: inherit; padding: 0; }
+.header-nav-item--active > a, .header-nav-item--active > .header-nav-folder-title { border-bottom: 2px solid #1a1a1a; }
+.header-nav-folder-content { display: none; position: absolute; top: 100%; left: 0; min-width: 10rem; background: #fff; border: 1px solid #eee; padding: 0.5rem 1rem; z-index: 5; }
+.header-nav-item--folder:hover .header-nav-folder-content,
+.header-nav-item--folder.is-open .header-nav-folder-content { display: block; }
+.header-nav-folder-item a { display: block; padding: 0.25rem 0; text-decoration: none; }
+.header-burger { display: none; }
+.header-burger-btn { border: 0; background: none; cursor: pointer; padding: 0.5rem; }
+.burger-inner { display: block; width: 1.5rem; }
+.burger-inner span { display: block; height: 2px; background: #1a1a1a; margin: 5px 0; }
+
+.header-menu { display: none; padding: 1rem 2rem; background: #fff; border-bottom: 1px solid #eee; }
+body.header--menu-open .header-menu { display: block; }
+.header-menu-nav-item a { display: block; padding: 0.5rem 0; text-decoration: none; }
+.header-menu-nav-folder[data-folder]:not([data-folder="root"]) { display: none; }
+.header-menu-nav-folder.is-active { display: block !important; }
+
+@media (max-width: 799px) {
+  .header-display-desktop { display: none; }
+  .header-display-mobile { display: block; }
+  .header-display-mobile .header-nav { display: none; }
+  .header-burger { display: block; }
 }
 
-.Header-branding-logo {
-  font-size: 1.25rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.Header-nav {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.Header-nav-item a {
-  text-decoration: none;
-  font-size: 0.95rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.Header-nav-item a[aria-current="page"] {
-  border-bottom: 2px solid #1a1a1a;
-}
-
-.Header-toggle {
-  display: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-@media (max-width: 767px) {
-  .Header-nav { display: none; }
-  .Header-toggle { display: block; }
-}
+#page { min-height: 40vh; }
 
 .hero {
   padding: 4rem 2rem;
@@ -123,17 +115,5 @@ a { color: inherit; }
 .Cart-item { display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid #eee; }
 .Cart-empty { color: #888; }
 
-.Footer {
-  padding: 3rem 2rem;
-  background: #1a1a1a;
-  color: #ccc;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: space-between;
-}
-
-.Footer-block-title { color: #fff; font-size: 0.85rem; text-transform: uppercase; margin: 0 0 0.75rem; }
-.Footer-nav { list-style: none; margin: 0; padding: 0; }
-.Footer-nav-item a { text-decoration: none; color: #ccc; font-size: 0.9rem; line-height: 2; }
-.Footer-copyright { width: 100%; margin-top: 2rem; font-size: 0.8rem; color: #888; }
+#footer-sections { background: #1a1a1a; color: #ccc; padding: 2rem; }
+#footer-sections a { color: #ccc; }
