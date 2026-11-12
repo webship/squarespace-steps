@@ -12,6 +12,23 @@ const path = require('path');
 const OUT = path.resolve(__dirname, '..', 'demo-site');
 const SITE = 'Demo Studio';
 
+// What Squarespace puts in Static.SQUARESPACE_CONTEXT. The announcement bar and
+// the cookie banner are off, as on a new site; the page script draws them when
+// a test switches them on in the browser (see tests/step-definitions/support).
+const CONTEXT = {
+  templateVersion: '7.1',
+  website: { siteTitle: SITE, language: 'en-US' },
+  websiteSettings: {},
+  showAnnouncementBar: false,
+  cookieSettings: {
+    isCookieBannerEnabled: false,
+    cookieBannerText: '',
+    cookieBannerCtaText: '',
+    cookieBannerHasOptOut: false,
+    cookieBannerOptOutCtaText: '',
+  },
+};
+
 // The header navigation. A folder holds pages, as a 7.1 header folder does.
 const NAV = [
   { label: 'Home', href: '/' },
@@ -128,6 +145,7 @@ function menu(page) {
 
 function header(page) {
   return `<header id="header" class="header theme-col--primary" tabindex="-1">
+    <div class="sqs-announcement-bar-dropzone"></div>
     <a href="#page" class="header-skip-link sqs-button-element--primary">Skip to Content</a>
     <div class="header-inner container--fluid">
       ${headerCopy(page, 'desktop')}
@@ -337,7 +355,7 @@ function page({ file, title, path: p, activeAs, body, scripts = [] }) {
   <title>${title} &mdash; ${SITE}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/assets/css/style.css">
-  <script>window.Static = { SQUARESPACE_CONTEXT: { templateVersion: '7.1', website: { siteTitle: '${SITE}', language: 'en-US' } } };</script>
+  <script>window.Static = { SQUARESPACE_CONTEXT: ${JSON.stringify(CONTEXT)} };</script>
   <script defer src="/assets/js/squarespace-demo.js"></script>
   <script defer src="/assets/js/cart.js"></script>
 ${scripts.map((s) => `  <script defer src="/assets/js/${s}"></script>`).join('\n')}

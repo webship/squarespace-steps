@@ -78,6 +78,17 @@ const SELECTORS = {
   searchResult: '.search-result',
   searchResultTitle: '.search-result .sqs-title',
   searchNotice: '.sqs-search-page-notice',
+  // Announcement bar and cookie banner. Neither is on by default; Squarespace's
+  // own scripts draw them from the site settings (`showAnnouncementBar`,
+  // `cookieSettings`).
+  announcementBar: '.sqs-announcement-bar',
+  announcementText: '.sqs-announcement-bar-text-inner',
+  announcementLink: '.sqs-announcement-bar-url',
+  announcementClose: '.sqs-announcement-bar-close',
+  cookieBanner: '.gdpr-cookie-banner',
+  cookieText: '.sqs-cookie-banner-v2-text',
+  cookieAccept: '.sqs-cookie-banner-v2-accept',
+  cookieDecline: '.sqs-cookie-banner-v2-deny',
   // Page content.
   content: 'main, #page, #siteWrapper, .Main-content',
   heroExcluded: 'header, footer, .blog-item, .BlogList-item, .product-list-item, .ProductList-item',

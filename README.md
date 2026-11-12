@@ -40,6 +40,7 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 | Blog list, post title, author, date | yes | yes | | yes | |
 | Search (a result, no match) | yes | | | yes | |
 | Gallery grid | | | | | yes |
+| Announcement bar, cookie banner (switched on in the browser) | yes | | | | |
 | Footer | yes | yes | yes | yes | |
 | Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes | yes |
 
@@ -115,6 +116,14 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 | `the search results should( not) contain "<title>"` | Then |
 | `the search should find <n> result(s)` | Then |
 | `the search should find no results` | Then |
+| `the announcement bar should( not) be visible` | Then |
+| `the announcement bar should( not) say "<text>"` | Then |
+| `the announcement bar should( not) link to "<href>"` | Then |
+| `I close the announcement bar` | When |
+| `the cookie banner should( not) be visible` | Then |
+| `the cookie banner should( not) say "<text>"` | Then |
+| `I accept the cookies` | When |
+| `I decline the cookies` | When |
 
 The product word is optional ("the Squarespace form" and "the form" both match). Every Then step takes `should` or `should not`, every action takes `I`, `we` or no pronoun, and every failure is a friendly message with a hint (no assertion or Playwright stack). Each assertion polls its condition for the `minWaitTime.page` budget (at least 10 s) instead of reading the page once, and every click this pack performs settles the page before the next step.
 
@@ -123,6 +132,8 @@ Forms: a field is found by its label as a person reads it ("Email", not "Email (
 Shop: the product list shows titles and prices and links to the product page; the "Add to cart" button and the quantity field are on the product page, so "I add the product ... to the cart" opens the product first when it is called on the list. The cart count is the visible `.sqs-cart-quantity` of the header (a hidden or missing count is 0). The add steps create a cart on the site and were run only against `demo-site/`; the real-site features read the list, the product page, the quantity field and the cart link.
 
 Blog, gallery and search: a post is found by its exact title; the author and the date are compared as the page writes them (the date format is a site setting). The gallery count covers gallery grids and reels; the lightbox was not observed open on any public demo and is not covered. "I search the site for" opens `/search` when the page has no search field, types the words and presses Enter.
+
+Announcement bar and cookie banner: both are off until the site owner switches them on, and none of the public template demos has either. The steps use the markup that Squarespace's own scripts draw (`.sqs-announcement-bar`, `section.gdpr-cookie-banner`). To prove them on a real template, the `@real-site` features use two test-support steps (`tests/step-definitions/support/`, not part of the npm package) that switch the settings on in the test browser by rewriting the page's `Static.SQUARESPACE_CONTEXT`; nothing on the site changes. The cookie banner shows only to the visitors the site's cookie settings select, often only in the EU, so a test from elsewhere may not see it.
 
 Two things to know:
 
