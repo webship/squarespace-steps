@@ -1,7 +1,8 @@
 # Read-only checks of a public Squarespace 7.1 template demo (Soony). Its
 # header has no page links; the facts, the footer and the forms are testable.
 # The form block is filled in but never sent: it validates on the server and a
-# submission is stored by Squarespace.
+# submission is stored by Squarespace. The shop is only read: no product is
+# added to a cart.
 @real-site @soony
 Feature: Squarespace 7.1 template demo (Soony)
   As a tester
@@ -34,3 +35,23 @@ Feature: Squarespace 7.1 template demo (Soony)
     Then the newsletter form should show an error for the field "Email Address"
     And the newsletter form should show the error "Email Address is required."
     And the newsletter form should not show the submitted confirmation
+
+  Scenario: The shop lists its products
+    Given I am on "/shop"
+    Then the shop should list 6 products
+    And the shop should list the product "Genuine Gemini"
+    And the shop should not list the product "Gift card"
+    And the cart should contain 0 items
+
+  Scenario: A product page shows its title, price and quantity
+    Given I am on "/shop"
+    When I open the product "Genuine Gemini"
+    Then the product title should be "Genuine Gemini"
+    And the product price should be "$25.00"
+    When I set the product quantity to 2
+
+  Scenario: The cart link opens the cart page
+    Given I am on "/shop"
+    When I open the cart
+    Then I should be on "/cart"
+    And the cart should contain 0 items

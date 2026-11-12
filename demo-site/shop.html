@@ -8,6 +8,7 @@
   <script>window.Static = { SQUARESPACE_CONTEXT: { templateVersion: '7.1', website: { siteTitle: 'Demo Studio', language: 'en-US' } } };</script>
   <script defer src="/assets/js/squarespace-demo.js"></script>
   <script defer src="/assets/js/cart.js"></script>
+
 </head>
 <body>
   <div id="siteWrapper" class="clearfix site-wrapper">
@@ -43,6 +44,18 @@
             </div>
           </nav>
           </div></div>
+        </div>
+        <div class="header-actions header-actions--right">
+          <div class="showOnMobile"><div class="header-actions-action header-actions-action--cart">
+              <a href="/cart" class="cart-style-icon icon--cart sqs-custom-cart header-icon show-empty-cart-state cart-quantity-zero" aria-label="Cart">
+                <span class="Cart-inner"><div class="icon-cart-quantity"><span class="cart-quantity-container"><span class="sqs-cart-quantity">0</span></span></div></span>
+              </a>
+            </div></div>
+          <div class="showOnDesktop"><div class="header-actions-action header-actions-action--cart">
+              <a href="/cart" class="cart-style-icon icon--cart sqs-custom-cart header-icon show-empty-cart-state cart-quantity-zero" aria-label="Cart">
+                <span class="Cart-inner"><div class="icon-cart-quantity"><span class="cart-quantity-container"><span class="sqs-cart-quantity">0</span></span></div></span>
+              </a>
+            </div></div>
         </div>
         <div class="header-burger">
           <button class="header-burger-btn burger">
@@ -81,6 +94,18 @@
             </div>
           </nav>
           </div></div>
+        </div>
+        <div class="header-actions header-actions--right">
+          <div class="showOnMobile"><div class="header-actions-action header-actions-action--cart">
+              <a href="/cart" class="cart-style-icon icon--cart sqs-custom-cart header-icon show-empty-cart-state cart-quantity-zero" aria-label="Cart">
+                <span class="Cart-inner"><div class="icon-cart-quantity"><span class="cart-quantity-container"><span class="sqs-cart-quantity">0</span></span></div></span>
+              </a>
+            </div></div>
+          <div class="showOnDesktop"><div class="header-actions-action header-actions-action--cart">
+              <a href="/cart" class="cart-style-icon icon--cart sqs-custom-cart header-icon show-empty-cart-state cart-quantity-zero" aria-label="Cart">
+                <span class="Cart-inner"><div class="icon-cart-quantity"><span class="cart-quantity-container"><span class="sqs-cart-quantity">0</span></span></div></span>
+              </a>
+            </div></div>
         </div>
         <div class="header-burger">
           <button class="header-burger-btn burger">
@@ -130,45 +155,35 @@
   </header>
   <main id="page" class="container" role="main">
     <article class="sections" id="sections">
-      
-    <section class="hero">
-      <h1 class="hero-title">Shop</h1>
-      <p class="hero-subtitle">Everything handmade, nothing mass-produced.</p>
-      <p class="Cart-summary" aria-live="polite"><span class="Cart-count">0</span> item(s) in cart</p>
-    </section>
-
-    <ul class="ProductList" data-total-products="3">
-      <li class="ProductList-item" data-product-id="ceramic-mug">
-        <a href="/shop.html#ceramic-mug">
-          <img src="/assets/img/product-placeholder.svg" alt="Ceramic Mug">
-          <p class="ProductItem-title">Ceramic Mug</p>
-          <p class="ProductItem-price">$24.00</p>
-        </a>
-        <button class="sqs-add-to-cart-button" data-product-id="ceramic-mug" data-product-title="Ceramic Mug" data-product-price="24.00">Add to Cart</button>
-      </li>
-      <li class="ProductList-item" data-product-id="linen-tote">
-        <a href="/shop.html#linen-tote">
-          <img src="/assets/img/product-placeholder.svg" alt="Linen Tote Bag">
-          <p class="ProductItem-title">Linen Tote Bag</p>
-          <p class="ProductItem-price">$38.00</p>
-        </a>
-        <button class="sqs-add-to-cart-button" data-product-id="linen-tote" data-product-title="Linen Tote Bag" data-product-price="38.00">Add to Cart</button>
-      </li>
-      <li class="ProductList-item" data-product-id="oak-cutting-board">
-        <a href="/shop.html#oak-cutting-board">
-          <img src="/assets/img/product-placeholder.svg" alt="Oak Cutting Board">
-          <p class="ProductItem-title">Oak Cutting Board</p>
-          <p class="ProductItem-price">$56.00</p>
-        </a>
-        <button class="sqs-add-to-cart-button" data-product-id="oak-cutting-board" data-product-title="Oak Cutting Board" data-product-price="56.00">Add to Cart</button>
-      </li>
-    </ul>
-
-    <aside class="Cart-inner" hidden>
-      <h2>Your cart</h2>
-      <ul class="Cart-items"></ul>
-      <p class="Cart-empty">Your cart is empty.</p>
-    </aside>
+      <section class="page-section layout-engine-section " data-section-id="s2250">
+        <div class="section-border"><div class="section-background"></div></div>
+        <div class="content-wrapper"><div class="content"><div class="sqs-layout sqs-grid-12 columns-12"><div class="row sqs-row"><div class="col sqs-col-12 span-12">
+        <div class="product-list">
+          <div class="product-list-header"><h2 class="nested-category-title">Shop</h2></div>
+          <div class="product-list-result-count-container"><span class="product-list-result-count">3 Results</span></div>
+          <div class="product-list-container"><div class="product-list-layout-container">
+          <div class="product-list-item is-loaded">
+            <a class="product-list-item-link" href="/shop/p/ceramic-mug.html" aria-label="Ceramic Mug">
+              <div class="product-list-image-wrapper"><figure class="product-list-item-image"><div class="grid-image-wrapper"><img src="/assets/img/product-placeholder.svg" alt="Ceramic Mug"></div></figure></div>
+              <section class="product-list-item-meta"><div class="product-list-title-price"><div class="product-list-item-title">Ceramic Mug</div><div class="product-list-item-price">$24.00</div></div></section>
+            </a>
+          </div>
+          <div class="product-list-item is-loaded">
+            <a class="product-list-item-link" href="/shop/p/linen-tote-bag.html" aria-label="Linen Tote Bag">
+              <div class="product-list-image-wrapper"><figure class="product-list-item-image"><div class="grid-image-wrapper"><img src="/assets/img/product-placeholder.svg" alt="Linen Tote Bag"></div></figure></div>
+              <section class="product-list-item-meta"><div class="product-list-title-price"><div class="product-list-item-title">Linen Tote Bag</div><div class="product-list-item-price">$38.00</div></div></section>
+            </a>
+          </div>
+          <div class="product-list-item is-loaded">
+            <a class="product-list-item-link" href="/shop/p/oak-cutting-board.html" aria-label="Oak Cutting Board">
+              <div class="product-list-image-wrapper"><figure class="product-list-item-image"><div class="grid-image-wrapper"><img src="/assets/img/product-placeholder.svg" alt="Oak Cutting Board"></div></figure></div>
+              <section class="product-list-item-meta"><div class="product-list-title-price"><div class="product-list-item-title">Oak Cutting Board</div><div class="product-list-item-price">$56.00</div></div></section>
+            </a>
+          </div>
+          </div></div>
+        </div>
+        </div></div></div></div></div>
+      </section>
     </article>
   </main>
   <footer class="sections" id="footer-sections">

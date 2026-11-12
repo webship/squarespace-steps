@@ -23,7 +23,7 @@ const NAV = [
   ] },
 ];
 
-const activeHref = (page, href) => page.path === href;
+const activeHref = (page, href) => (page.activeAs || page.path) === href;
 const folderActive = (page, item) => item.pages.some((p) => activeHref(page, p.href));
 
 function navList(page) {
@@ -55,6 +55,16 @@ function navList(page) {
           </nav>`;
 }
 
+const cartLink = `<div class="header-actions-action header-actions-action--cart">
+              <a href="/cart" class="cart-style-icon icon--cart sqs-custom-cart header-icon show-empty-cart-state cart-quantity-zero" aria-label="Cart">
+                <span class="Cart-inner"><div class="icon-cart-quantity"><span class="cart-quantity-container"><span class="sqs-cart-quantity">0</span></span></div></span>
+              </a>
+            </div>`;
+const actions = `<div class="header-actions header-actions--right">
+          <div class="showOnMobile">${cartLink}</div>
+          <div class="showOnDesktop">${cartLink}</div>
+        </div>`;
+
 const burger = `<div class="header-burger">
           <button class="header-burger-btn burger">
             <span hidden class="js-header-burger-open-title visually-hidden">Open Menu</span>
@@ -71,6 +81,7 @@ function headerCopy(page, kind) {
           ${navList(page)}
           </div></div>
         </div>
+        ${actions}
         ${burger}
       </div>`;
 }
@@ -213,8 +224,51 @@ function newsletterBlock() {
         </div></div>`;
 }
 
-function page({ file, title, path: p, body, scripts = [] }) {
-  const pg = { path: p };
+const PRODUCTS = [
+  { slug: 'ceramic-mug', title: 'Ceramic Mug', price: '$24.00' },
+  { slug: 'linen-tote-bag', title: 'Linen Tote Bag', price: '$38.00' },
+  { slug: 'oak-cutting-board', title: 'Oak Cutting Board', price: '$56.00' },
+];
+
+// The product list as 7.1 renders it: each item is a link with the title and
+// the price; there is no "Add to cart" button in the list.
+function productList() {
+  const items = PRODUCTS.map((p) => `<div class="product-list-item is-loaded">
+            <a class="product-list-item-link" href="/shop/p/${p.slug}.html" aria-label="${p.title}">
+              <div class="product-list-image-wrapper"><figure class="product-list-item-image"><div class="grid-image-wrapper"><img src="/assets/img/product-placeholder.svg" alt="${p.title}"></div></figure></div>
+              <section class="product-list-item-meta"><div class="product-list-title-price"><div class="product-list-item-title">${p.title}</div><div class="product-list-item-price">${p.price}</div></div></section>
+            </a>
+          </div>`).join('\n          ');
+  return `<div class="product-list">
+          <div class="product-list-header"><h2 class="nested-category-title">Shop</h2></div>
+          <div class="product-list-result-count-container"><span class="product-list-result-count">${PRODUCTS.length} Results</span></div>
+          <div class="product-list-container"><div class="product-list-layout-container">
+          ${items}
+          </div></div>
+        </div>`;
+}
+
+// A product page as 7.1 renders it: title, price, quantity field and the
+// "Add to cart" button, whose label turns into "Added!" after a click.
+function productPage(p) {
+  return `<div class="product-detail">
+          <h1 class="product-title">${p.title}</h1>
+          <div id="main-product-price" class="product-price"><div class="product-price-value">${p.price}</div></div>
+          <div class="product-add-to-cart"><div class="product-add-to-cart-layout-wrapper"><div class="product-purchase-controls-wrapper">
+            <div class="sqs-site-style-form product-quantity-input-wrapper"><div class="form-item"><div class="product-quantity-input custom-form-element" role="group" aria-label="Quantity">
+              <button class="decrease-button" type="button" aria-label="Decrease quantity by 1">-</button>
+              <input name="quantity-input" type="number" value="1" min="1" max="9999" size="4" autocomplete="off">
+              <button class="increase-button" type="button" aria-label="Increase quantity by 1">+</button>
+            </div></div></div>
+            <div class="sqs-add-to-cart-button-wrapper product-add-to-cart-button-wrapper">
+              <button class="sqs-add-to-cart-button sqs-button-element--primary"><div class="sqs-add-to-cart-button-inner"><span class="add-to-cart-text">Add To Cart</span><span class="cart-added-text">Added!</span></div></button>
+            </div>
+          </div></div></div>
+        </div>`;
+}
+
+function page({ file, title, path: p, activeAs, body, scripts = [] }) {
+  const pg = { path: p, activeAs };
   const doc = `<!doctype html>
 <html lang="en">
 <head>
@@ -224,6 +278,7 @@ function page({ file, title, path: p, body, scripts = [] }) {
   <link rel="stylesheet" href="/assets/css/style.css">
   <script>window.Static = { SQUARESPACE_CONTEXT: { templateVersion: '7.1', website: { siteTitle: '${SITE}', language: 'en-US' } } };</script>
   <script defer src="/assets/js/squarespace-demo.js"></script>
+  <script defer src="/assets/js/cart.js"></script>
 ${scripts.map((s) => `  <script defer src="/assets/js/${s}"></script>`).join('\n')}
 </head>
 <body>
@@ -239,6 +294,7 @@ ${scripts.map((s) => `  <script defer src="/assets/js/${s}"></script>`).join('\n
 </body>
 </html>
 `;
+  fs.mkdirSync(path.dirname(path.join(OUT, file)), { recursive: true });
   fs.writeFileSync(path.join(OUT, file), doc);
 }
 
@@ -249,45 +305,9 @@ const pages = [
     section(html('<h2>Welcome to Demo Studio</h2><p>This is a self-contained demo site that carries the markup Squarespace 7.1 renders, so the <code>squarespace-steps</code> suite can run in CI without a Squarespace account.</p>')),
   ].join('\n      ') },
   { file: 'about.html', title: 'About', path: '/about.html', body: section(html('<h1>About Demo Studio</h1><p>Small batch. Big care.</p><h2>Our story</h2><p>Demo Studio started in a garage with one sewing machine and a stubborn belief that things should be made to last.</p>')) },
-  { file: 'shop.html', title: 'Shop', path: '/shop.html', scripts: ['cart.js'], body: `
-    <section class="hero">
-      <h1 class="hero-title">Shop</h1>
-      <p class="hero-subtitle">Everything handmade, nothing mass-produced.</p>
-      <p class="Cart-summary" aria-live="polite"><span class="Cart-count">0</span> item(s) in cart</p>
-    </section>
-
-    <ul class="ProductList" data-total-products="3">
-      <li class="ProductList-item" data-product-id="ceramic-mug">
-        <a href="/shop.html#ceramic-mug">
-          <img src="/assets/img/product-placeholder.svg" alt="Ceramic Mug">
-          <p class="ProductItem-title">Ceramic Mug</p>
-          <p class="ProductItem-price">$24.00</p>
-        </a>
-        <button class="sqs-add-to-cart-button" data-product-id="ceramic-mug" data-product-title="Ceramic Mug" data-product-price="24.00">Add to Cart</button>
-      </li>
-      <li class="ProductList-item" data-product-id="linen-tote">
-        <a href="/shop.html#linen-tote">
-          <img src="/assets/img/product-placeholder.svg" alt="Linen Tote Bag">
-          <p class="ProductItem-title">Linen Tote Bag</p>
-          <p class="ProductItem-price">$38.00</p>
-        </a>
-        <button class="sqs-add-to-cart-button" data-product-id="linen-tote" data-product-title="Linen Tote Bag" data-product-price="38.00">Add to Cart</button>
-      </li>
-      <li class="ProductList-item" data-product-id="oak-cutting-board">
-        <a href="/shop.html#oak-cutting-board">
-          <img src="/assets/img/product-placeholder.svg" alt="Oak Cutting Board">
-          <p class="ProductItem-title">Oak Cutting Board</p>
-          <p class="ProductItem-price">$56.00</p>
-        </a>
-        <button class="sqs-add-to-cart-button" data-product-id="oak-cutting-board" data-product-title="Oak Cutting Board" data-product-price="56.00">Add to Cart</button>
-      </li>
-    </ul>
-
-    <aside class="Cart-inner" hidden>
-      <h2>Your cart</h2>
-      <ul class="Cart-items"></ul>
-      <p class="Cart-empty">Your cart is empty.</p>
-    </aside>` },
+  { file: 'shop.html', title: 'Shop', path: '/shop.html', body: section(productList()) },
+  ...PRODUCTS.map((p) => ({ file: `shop/p/${p.slug}.html`, title: p.title, path: `/shop/p/${p.slug}.html`, activeAs: '/shop.html', body: section(productPage(p)) })),
+  { file: 'cart.html', title: 'Cart', path: '/cart', body: section(html('<h2>Your cart</h2><p>The cart opens here. The count in the header is the number of items you added.</p>')) },
   { file: 'blog.html', title: 'Blog', path: '/blog.html', body: `
     <section class="hero">
       <h1 class="hero-title">Journal</h1>
