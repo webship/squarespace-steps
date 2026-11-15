@@ -134,19 +134,19 @@ Then(/^(?:the )?footer navigation should( not)* contain "([^"]*)"$/, async funct
 });
 
 /**
- * Assert which Squarespace generation the site runs on, read from
+ * Assert which generation of the platform the site runs on, read from
  * `Static.SQUARESPACE_CONTEXT.templateVersion`: "7.1" or "7.0".
  *
- * Example #1: Then the site should use Squarespace 7.1
- * Example #2: And the site should use Squarespace 7.1
- * Example #3: Then the site should not use Squarespace 7.0
- * Example #4: Then the site should use Squarespace 7.0
- * Example #5: But the site should not use Squarespace 7.1
+ * Example #1: Then the site should use version "7.1"
+ * Example #2: And the site should use version "7.1"
+ * Example #3: Then the site should not use version "7.0"
+ * Example #4: Then the site should use version "7.0"
+ * Example #5: But the site should not use version "7.1"
  *
  */
-Then(/^(?:the )?site should( not)* use Squarespace (7\.0|7\.1)$/, async function (notCase, version) {
+Then(/^(?:the )?site should( not)* use version "(7\.0|7\.1)"$/, async function (notCase, version) {
   await assertContext(this, 'templateVersion', version === '7.0' ? '7' : '7.1', Boolean(notCase), {
-    what: 'the Squarespace version',
+    what: 'the version of the site',
     hint: 'The version is `Static.SQUARESPACE_CONTEXT.templateVersion` ("7.1", or "7" for 7.0); a page that is not a Squarespace site has no such object.',
   });
 });

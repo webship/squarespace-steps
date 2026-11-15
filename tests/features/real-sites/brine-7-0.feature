@@ -8,8 +8,8 @@ Feature: Squarespace 7.0 template demo (Brine)
 
   Scenario: The site reports its facts
     Given I am on "/blog-brine"
-    Then the site should use Squarespace 7.0
-    And the site should not use Squarespace 7.1
+    Then the site should use version "7.0"
+    And the site should not use version "7.1"
 
   Scenario: The header marks the current page
     Given I am on "/blog-brine"
