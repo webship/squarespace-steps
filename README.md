@@ -82,7 +82,7 @@ The steps live in `tests/step-definitions/` and are loaded through `squarespace.
 | `the (site )footer should( not) be visible` / `I should( not) see the footer` | Then |
 | `the (site )footer should( not) show\|display a copyright( notice)` | Then |
 | `the footer navigation should( not) contain "<label>"` | Then |
-| `the site should( not) use Squarespace 7.1\|7.0` | Then |
+| `the site should( not) use version "7.1"\|"7.0"` | Then |
 | `the site title should( not) be "<title>"` | Then |
 | `the site language should( not) be "<language>"` | Then |
 | `I fill in the form field "<label>" with "<value>"` | When |

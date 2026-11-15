@@ -9,7 +9,7 @@ Feature: Squarespace 7.1 template demo (Bailard)
 
   Scenario: The site reports its facts
     Given I am on the homepage
-    Then the site should use Squarespace 7.1
+    Then the site should use version "7.1"
     And the site title should be "Bailard Foundation"
     And the site language should be "en-US"
 

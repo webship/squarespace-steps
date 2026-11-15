@@ -14,8 +14,8 @@ Feature: Home page
     And the hero call-to-action button should link to "/shop.html"
 
   Scenario: The page reports its Squarespace facts
-    Then the site should use Squarespace 7.1
-    And the site should not use Squarespace 7.0
+    Then the site should use version "7.1"
+    And the site should not use version "7.0"
     And the site title should be "Demo Studio"
     And the site language should be "en-US"
 

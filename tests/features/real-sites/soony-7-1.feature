@@ -11,7 +11,7 @@ Feature: Squarespace 7.1 template demo (Soony)
 
   Scenario: The site facts and footer
     Given I am on "/shop"
-    Then the site should use Squarespace 7.1
+    Then the site should use version "7.1"
     And the site title should be "SOONY CANDLE"
     And the site footer should be visible
     And the footer navigation should contain "Shipping & Returns"
