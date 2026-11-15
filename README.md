@@ -1,3 +1,5 @@
+<p align="center"><img src="https://raw.githubusercontent.com/webship/squarespace-steps/2.0.x/assets/logo.svg" alt="Squarespace logo" width="96"></p>
+
 # squarespace-steps
 
 [![Test](https://github.com/webship/squarespace-steps/actions/workflows/test.yml/badge.svg)](https://github.com/webship/squarespace-steps/actions/workflows/test.yml)
@@ -157,3 +159,7 @@ All changes land via pull request against `2.0.x`; see the [issue tracker](https
 ## License
 
 MIT, see [LICENSE](LICENSE).
+
+## Logo
+
+The Squarespace logo in this README comes from Simple Icons 16.37.0 (CC0-1.0), filled with the colour the set lists for the brand. The Squarespace name and logo are trademarks of their owner; this pack is not affiliated with or endorsed by them.
