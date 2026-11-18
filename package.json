@@ -15,6 +15,7 @@
     "test": "cucumber-js --config cucumber.js",
     "test:headed": "HEADLESS=false cucumber-js --config cucumber.js",
     "test:examples": "node scripts/check-examples.js",
+    "test:paths": "node scripts/check-paths.js",
     "test:real-sites": "node scripts/test-real-sites.js",
     "probe": "node --import tsx scripts/probe-selectors.js",
     "test:chromium": "BROWSER=chromium cucumber-js --config cucumber.js",
