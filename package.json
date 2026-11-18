@@ -51,7 +51,7 @@
     "http-server": "^14.1.1",
     "tsx": "^4.19.2",
     "wait-on": "^9.0.10",
-    "webship-js": "^2.0.6"
+    "webship-js": "^2.0.13"
   },
   "peerDependencies": {
     "webship-js": "^2.0.6"
