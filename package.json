@@ -5,6 +5,8 @@
   "main": "tests/step-definitions/squarespace.steps.js",
   "files": [
     "tests/step-definitions/*.js",
+    "tests/step-definitions/support/*.js",
+    "tests/features/*.feature",
     "docs/selector-evidence.md",
     "README.md",
     "LICENSE"
