@@ -63,6 +63,17 @@ npm run test:examples         # checks the JSDoc examples and the feature steps 
 
 CI (`.github/workflows/test.yml`) runs the same flow on every push and pull request.
 
+## Test users
+
+None. The steps cover the public site only, and the suite tests the demo site
+of this repository (`demo-site/`), which has no sign-in: `cucumber.js` lists no
+accounts (its `worldParameters` has no `users`) and no scenario signs in. The
+JSON of the accounts is empty:
+
+```json
+{}
+```
+
 ## Step definitions
 
 The steps live in `tests/step-definitions/` and are loaded through `squarespace.steps.js`. To use them in another webship-js project, install `@webship-js/squarespace-steps` and add `node_modules/@webship-js/squarespace-steps/tests/step-definitions/squarespace.steps.js` to that project's `require` list in `cucumber.js`.
