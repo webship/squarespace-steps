@@ -94,7 +94,11 @@ async function assertScan(world, args, { not = false, count, what, hint }) {
     const found = await scan(world, args).catch(() => ({ matched: 0, total: 0, visible: 0, labels: [] }));
     let message;
     if (count !== undefined) message = `Expected ${count} ${what} but found ${found.matched}.`;
-    else if (not) message = `Expected no ${what}, but it is on the page.`;
+    else if (not) {
+      message = / to be visible$/.test(what)
+        ? `Expected ${what.replace(/ to be visible$/, ' not to be visible')}, but it is.`
+        : `Expected not to find ${what}, but it is on the page.`;
+    }
     else message = `Expected ${what}, but it was not found within ${timeout} ms.`;
     if (!not && count === undefined) message += listLabels(found.labels);
     throw friendly({ message, hint });
@@ -152,10 +156,12 @@ async function assertContext(world, key, expected, not, { what, hint }) {
   } catch {
     const context = await squarespaceContext(world).catch(() => null);
     const found = context ? context[key] : undefined;
+    // A 7.0 site reports its version as "7": the message names it as the scenario does.
+    const show = (value) => (key === 'templateVersion' && value === '7' ? '7.0' : value);
     throw friendly({
       message: not
-        ? `Expected ${what} not to be "${expected}", but it is.`
-        : `Expected ${what} "${expected}" but found ${context ? `"${found}"` : 'no Squarespace context on this page'}.`,
+        ? `Expected ${what} not to be "${show(expected)}", but it is.`
+        : `Expected ${what} "${show(expected)}" but found ${context ? `"${show(found)}"` : 'no Squarespace context on this page'}.`,
       hint,
     });
   }
