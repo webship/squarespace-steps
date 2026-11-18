@@ -41,6 +41,7 @@ Feature: Site navigation
     Then the mobile menu should be open
     And the mobile menu should contain "Shop"
     And the mobile menu should contain "Blog"
+    But the mobile menu should not contain "Checkout"
     When I close the mobile menu
     Then the mobile menu should not be open
 

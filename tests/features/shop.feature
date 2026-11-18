@@ -22,6 +22,7 @@ Feature: Shop page
     When I open the product "Ceramic Mug"
     Then the product title should be "Ceramic Mug"
     And the product price should be "$24.00"
+    But the product price should not be "$10.00"
     But the product title should not be "Linen Tote Bag"
     And "Shop" should be the current navigation item
 
