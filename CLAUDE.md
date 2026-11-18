@@ -8,19 +8,21 @@ This file is the durable contract for any AI coding assistant working in this re
 
 ## 2. Git & commit rules
 
-- Commit identity: `Webship.co` (set locally via `git config user.name` / `user.email`, not global).
-- Every commit gets a `Co-authored-by: <AI name> <noreply@anthropic.com>` trailer for the AI and model that made it.
-- **Never commit directly to `2.0.x` (the default branch).** Work on a topic branch and open a pull request, even though this is a private, single-maintainer repo. The one accepted exception is a minimal one-time bootstrap commit needed to give a brand-new GitHub repo a base branch to open PRs against — flag it explicitly if it happens; everything else goes through PRs.
-- One GitHub issue + one PR per logical unit of work (scaffold, steps, features, CI, docs, ...), not one large PR. List every issue/PR link for the user to review. In practice PRs get squash-merged immediately after creation since there is no separate reviewer — but still create them as PRs, not direct pushes.
+- Commits carry the maintainer's identity (`git config user.name` / `user.email` of the repository); a commit an AI made ends with `AI-Generated: Yes` and a `Co-Authored-By: <AI name> <noreply@anthropic.com>` trailer for the AI and model that made it.
+- **Never commit directly to `2.0.x` (the default branch).** Work on a topic branch named after its issue (`<issue>-<topic>`) and open a pull request. The repository is public and several people and agents work in it at once: check that a pull request is yours (its number and branch) before you touch it.
+- One GitHub issue and one pull request per fix (scaffold, steps, features, CI, docs, ...), not one large PR. The issue says Problem/Motivation, Steps to reproduce and Proposed resolution; the pull request starts with `Closes #<issue>` and ends with the Checkpoints list of the repository's pull request template. Never tick "Reviewed by a human" or "Code review by maintainers".
+- A pull request is merged with a merge commit, and only when every check of the pull request has concluded green. A release (version, tag, npm) is the maintainer's step, not a pull request's.
 
 ## 3. Publishing
 
-Published to npm as `@webship-js/squarespace-steps` (`publishConfig.access: public`); `files` in `package.json` limits the tarball to the step file, README and LICENSE. Releases are tagged on `2.0.x`.
+Published to npm as `@webship-js/squarespace-steps` (`publishConfig.access: public`); `files` in `package.json` limits the tarball to the step definitions (with the test aids of `tests/step-definitions/support/`), the example features of `tests/features/`, `docs/selector-evidence.md`, the README and the LICENSE. Releases are tagged on `2.0.x`.
 
 ## 4. Step definitions
 
 - Step files are in `tests/step-definitions/` and are loaded through `squarespace.steps.js`; shared selectors and helpers are in `squarespace-helpers.js`.
-- Follow webship-js's own authoring conventions: pronoun-flexible phrasing (`(I |we )*` prefix via regex where natural), plain English step text (no camelCase), and a JSDoc block with at least 5 `Example #N:` Gherkin lines above each step.
+- Follow webship-js's own authoring conventions: pronoun-flexible phrasing (`(I |we )*` prefix via regex where natural), plain English step text (no camelCase), and a JSDoc block with at least 5 `Example #N:` Gherkin lines above each step (`npm run test:examples` checks them).
+- **No platform name in a step phrase, an `Example #N:` line or made-up data** (the name of the site, a post, a search term); a value the site itself prints, such as its version, may be asserted. Feature and scenario titles may name the platform.
+- The README keeps the logo, the "Test users" block (the JSON of the accounts in `cucumber.js`; this pack has none) and "From nothing to a green run".
 - **Regex step patterns: every capturing group must be consumed by a handler argument.** cucumber-js passes each capture group as a positional argument — an unused group causes a runtime arity error ("function has N arguments, should have M"). Use non-capturing groups `(?:...)` for alternation you don't need the matched text of.
 - **Selectors come from real Squarespace markup.** Read them from a public template demo (`*-demo.squarespace.com`, listed on squarespace.com/templates) or from Squarespace's own scripts, and record the evidence in the README. 7.1 first; 7.0 (Brine family) only where a demo shows it. Never add a selector only `demo-site/` renders.
 - **Squarespace 7.1 renders the header twice** (`.header-display-desktop`, `.header-display-mobile`) and hides one copy, so never act on the first match of a header selector; use the helpers, which take the visible one.
@@ -33,11 +35,12 @@ Published to npm as `@webship-js/squarespace-steps` (`publishConfig.access: publ
 ## 6. Before declaring work done
 
 1. `npx cucumber-js --dry-run` — no ambiguous or undefined steps.
-2. `npm run demo:serve` (or point `LAUNCH_URL` at a real site) then `npm test` — all scenarios must pass.
-3. Check the GitHub Actions run for the pushed branch/PR is green.
+2. `npm run test:examples` and `npm run test:paths` — the examples match their own step only, and a feature named on the command line runs alone.
+3. `npm run demo:serve` (or point `LAUNCH_URL` at a real site) then `npm test` — all scenarios must pass, twice in a row.
+4. Check the GitHub Actions run for the pushed branch/PR is green.
 
 ## 7. Avoid
 
 - Comments that describe WHAT the code does — names already do that.
-- Backwards-compatibility shims, `_unused` renames, `// removed` comments — delete unused code, git history is the record.
+- `_unused` renames and `// removed` comments — delete unused code, git history is the record. The one shim to keep: a step phrase that changes keeps its old wording as a deprecated alias for one release.
 - Adding a live external site dependency for CI when a self-built fixture would be more stable (see §5).
