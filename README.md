@@ -46,6 +46,134 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 | Footer | yes | yes | yes | yes | |
 | Site facts (`Static.SQUARESPACE_CONTEXT`) | yes | yes | yes | yes | yes |
 
+## From nothing to a green run
+
+What the machine needs: git and Node.js 20 or later with npm. No container: the
+demo site is a folder of static pages.
+
+**1. The site.** The demo site of this repository: static pages generated from
+the markup of real Squarespace 7.1 templates (the header twice, folders and the
+mobile menu, a hero, the form and newsletter blocks, a shop with product pages
+and a cart count, a blog, a gallery, the search page, the footer and the
+`Static.SQUARESPACE_CONTEXT` a page reports). Serve it and leave the server
+running in its own terminal:
+
+```bash
+git clone https://github.com/webship/squarespace-steps.git
+cd squarespace-steps
+npx http-server demo-site -p 8080 -s
+```
+
+The site answers at `http://localhost:8080`.
+
+**2. A test project**, in another terminal:
+
+```bash
+mkdir squarespace-tests && cd squarespace-tests
+npm init -y
+npm install --save-dev webship-js @webship-js/squarespace-steps
+npx init-webship-js
+```
+
+`npx init-webship-js` writes `cucumber.js`, `playwright.config.ts`, the
+`tests/` folders with a first feature and the `npm test` scripts, and installs
+Chromium. npm usually runs it already when it installs webship-js; a second run
+changes nothing.
+
+**3. `cucumber.js`.** Replace the file with the wiring of the pack: the step
+files of webship-js and the entry file of the pack, and the address of the
+site. The suite needs no account (see [Test users](#test-users)).
+
+```javascript
+module.exports = {
+  default: {
+    requireModule: ['tsx/cjs'],
+    require: [
+      'node_modules/webship-js/tests/step-definitions/**/*.js',
+      'node_modules/@webship-js/squarespace-steps/tests/step-definitions/squarespace.steps.js',
+      'tests/step-definitions/**/*.js',
+    ],
+    paths: ['tests/features/**/*.feature'],
+    format: ['@cucumber/pretty-formatter', 'json:tests/reports/cucumber_report.json'],
+    worldParameters: {
+      launchUrl: process.env.LAUNCH_URL || 'http://localhost:8080',
+      // The waits webship-js adds around each page, scenario and step (milliseconds).
+      minWaitTime: { page: 3000, before_scenario: 0, after_scenario: 0, before_step: 0, after_step: 0 },
+    },
+  },
+};
+```
+
+**4. A first feature**, `tests/features/first-run.feature`:
+
+```gherkin
+Feature: First run
+  Scenario: The home page reports its facts and its hero
+    Given I am on the homepage
+    Then the site should use version "7.1"
+    And the site title should be "Demo Studio"
+    And the hero title should be "Handmade goods, honestly sourced."
+    And "Home" should be the current navigation item
+
+  Scenario: The shop lists its products
+    Given I am on the "/shop.html" page
+    Then the shop should list 3 products
+    And the shop should list the product "Ceramic Mug"
+```
+
+**5. Run it.**
+
+```bash
+npm test
+```
+
+A green first run prints every step, then the summary (the starter feature of
+`npx init-webship-js` and the two scenarios above, passed) and the HTML report
+it wrote:
+
+```
+3 scenarios (3 passed)
+10 steps (10 passed)
+0m01.907s (executing steps: 0m01.874s)
+[webship-js] HTML report → …/squarespace-tests/tests/reports/cucumber_report.html
+```
+
+From there, copy the features of [`tests/features/`](tests/features/) (they
+also ship in the package, under
+`node_modules/@webship-js/squarespace-steps/tests/features/`): together they use
+every step of the pack, against the pages of the demo site.
+`banners.feature` switches the announcement bar and the cookie banner on in the
+test browser with the two test aids of
+`tests/step-definitions/support/squarespace-site-settings.steps.js` (they ship
+too; add that file to `require` to use them): the demo, like the public
+template demos, has both off.
+
+### What the suite tests
+
+The features of this repository run every step of the pack against the demo
+site, and CI serves it and runs them on every change: the header navigation
+(its items, the current item, folders) and the mobile menu, the hero title and
+button, the footer (its links, its copyright line), the facts a page reports
+(version, site title, language), the form block (the errors of an empty or a
+partly filled form, the confirmation) and the newsletter block (its browser-side
+errors, the confirmation), the shop (the product list, a product page, its
+price, the quantity, adding to the cart from the list and from the product page,
+the cart count across pages), the blog (the list, a post, its author and date),
+the gallery, the search page (results and no results), and the announcement bar
+and the cookie banner (their text, link, closing, accepting and declining). The
+assertions run in their positive and in their negative form, but two: a site has
+one footer on every page, with its copyright line, so the negative of
+`the site footer should be visible` and of
+`the footer should show a copyright notice` cannot be true on the demo.
+
+Not tested: what Squarespace itself does on the server. The demo stands in for
+it: the form block's submission and its stored entries, the cart page and the
+checkout, payments, member areas, scheduling and the editor. The demo is
+generated from the markup of public template demos, and the templates can
+change: the read-only features of `tests/features/real-sites/` and
+`npm run probe` check the selectors on the public demos, outside CI. A run
+leaves nothing: the site is static and the cart lives in the browser.
+
 ## Setup
 
 ```bash
@@ -148,7 +276,7 @@ Shop: the product list shows titles and prices and links to the product page; th
 
 Blog, gallery and search: a post is found by its exact title; the author and the date are compared as the page writes them (the date format is a site setting). The gallery count covers gallery grids and reels; the lightbox was not observed open on any public demo and is not covered. "I search the site for" opens `/search` when the page has no search field, types the words and presses Enter.
 
-Announcement bar and cookie banner: both are off until the site owner switches them on, and none of the public template demos has either. The steps use the markup that Squarespace's own scripts draw (`.sqs-announcement-bar`, `section.gdpr-cookie-banner`). To prove them on a real template, the `@real-site` features use two test-support steps (`tests/step-definitions/support/`, not part of the npm package) that switch the settings on in the test browser by rewriting the page's `Static.SQUARESPACE_CONTEXT`; nothing on the site changes. The cookie banner shows only to the visitors the site's cookie settings select, often only in the EU, so a test from elsewhere may not see it.
+Announcement bar and cookie banner: both are off until the site owner switches them on, and none of the public template demos has either. The steps use the markup that Squarespace's own scripts draw (`.sqs-announcement-bar`, `section.gdpr-cookie-banner`). To prove them on a real template, the `@real-site` features use two test-support steps (`tests/step-definitions/support/`, shipped beside the steps but loaded only when a project adds that file to `require`) that switch the settings on in the test browser by rewriting the page's `Static.SQUARESPACE_CONTEXT`; nothing on the site changes. The cookie banner shows only to the visitors the site's cookie settings select, often only in the EU, so a test from elsewhere may not see it.
 
 Two things to know:
 

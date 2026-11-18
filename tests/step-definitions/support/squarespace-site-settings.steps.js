@@ -1,6 +1,7 @@
 'use strict';
 
-// Test support, not shipped in the npm package: switch the announcement bar or
+// Test support, shipped in the npm package but not loaded by squarespace.steps.js
+// (add this file to the `require` list of cucumber.js to use it): switch the announcement bar or
 // the cookie banner on in the browser, so the steps for them can run on a site
 // that has neither (the public template demos have both switched off).
 //
