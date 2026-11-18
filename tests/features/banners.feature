@@ -32,6 +32,7 @@ Feature: Announcement bar and cookie banner
     And I am on the homepage
     Then the cookie banner should be visible
     And the cookie banner should say "We use cookies to improve your experience."
+    But the cookie banner should not say "Cookies are switched off."
     When I accept the cookies
     Then the cookie banner should not be visible
 

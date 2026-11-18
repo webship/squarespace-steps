@@ -27,9 +27,12 @@ Feature: Blog page
   Scenario: A post opens on its own page
     When I open the blog post "Why we use linen instead of canvas"
     Then the blog post title should be "Why we use linen instead of canvas"
+    But the blog post title should not be "Seasoning a cutting board the right way"
     And the hero title should be "Why we use linen instead of canvas"
     And the blog post should show the author "Studio Team"
+    But the blog post should not show the author "Guest Writer"
     And the blog post should show the date "May 14"
+    But the blog post should not show the date "June 2"
     And "Blog" should be the current navigation item
 
   @mobile

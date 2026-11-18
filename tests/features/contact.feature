@@ -48,6 +48,7 @@ Feature: Contact page
     When I fill in the newsletter form field "Email Address" with "not-an-address"
     And I submit the newsletter form
     Then the newsletter form should show the error "Email Address is not valid."
+    But the newsletter form should not show the error "Email Address is required."
 
   Scenario: The newsletter form confirms a sign-up
     When I fill in the newsletter form field "Email Address" with "subscriber@example.com"

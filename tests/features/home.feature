@@ -12,12 +12,15 @@ Feature: Home page
     Then the hero title should be "Handmade goods, honestly sourced."
     And the hero title should not be "About Demo Studio"
     And the hero call-to-action button should link to "/shop.html"
+    But the hero call-to-action button should not link to "/contact.html"
 
   Scenario: The page reports its Squarespace facts
     Then the site should use version "7.1"
     And the site should not use version "7.0"
     And the site title should be "Demo Studio"
+    But the site title should not be "Another Studio"
     And the site language should be "en-US"
+    But the site language should not be "de-DE"
 
   Scenario: Main navigation lists the main pages
     Then the site navigation should contain "Home"
