@@ -48,7 +48,7 @@ To point the suite at a real site, set `LAUNCH_URL` to that site's URL when runn
 
 ## From nothing to a green run
 
-What the machine needs: git and Node.js 20 or later with npm. No container: the
+What the machine needs: git and Node.js 24 or later with npm. No container: the
 demo site is a folder of static pages.
 
 **1. The site.** The demo site of this repository: static pages generated from
